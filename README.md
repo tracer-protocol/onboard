@@ -44,3 +44,11 @@ await onboard.walletCheck()
 ## Documentation
 
 For detailed documentation head to [docs.blocknative.com](https://docs.blocknative.com/onboard)
+
+
+## Updates Made
+Updates made from the original onboard package include
+- addition of getHelpLink to both walletSelect props as well as walletCheck props
+- styling of buttons
+- styling of modal itself
+- add custom loading icon instead of spinner
