@@ -34,7 +34,7 @@ function connect(options: WalletCheckCustomOptions = {}): WalletCheckModule {
         heading: heading || 'Login and Authorize Your Wallet',
         description:
           description ||
-          `This dapp requires access to your wallet, please login and authorize access to your ${wallet.name} accounts to continue.`,
+          `Connecting to ${wallet.name}`,
         getHelpLink:
           getHelpLink ||
           'https://docs.tracer.finance/faqs/tracer-faq#wallet-connect',
