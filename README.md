@@ -52,3 +52,43 @@ Updates made from the original onboard package include
 - styling of buttons
 - styling of modal itself
 - add custom loading icon instead of spinner
+
+
+### Custom Colour Scheme Example
+```
+  /** BNC-Onboarding styles */
+    .bn-onboard-modal-content {
+        background: var(--color-background-secondary)!important;
+        color: var(--color-text)!important;
+    }
+
+    /** Header Styles */
+    .bn-onboard-modal-content-header h3 {
+        color: var(--color-text)!important;
+    }
+
+    /** Wallet Styles */
+    .bn-onboard-modal-select-wallets li {
+        .bn-onboard-selected-wallet {
+            background: var(--color-background)!important;
+        }
+    }
+    .bn-onboard-modal-select-wallets li:hover {
+        background: var(--color-accent);
+    }
+
+    /** Close Styles */
+    .bn-onboard-modal-content-close {
+        border: 1px solid var(--color-primary);
+        svg {
+            fill: var(--color-primary)!important;
+        }
+    }
+
+    /** Loadinng */
+    .bn-onboard-loading {
+        svg {
+            fill: var(--color-text);
+        }
+    }
+```
