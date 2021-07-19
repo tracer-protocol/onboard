@@ -9,11 +9,13 @@
 </script>
 
 <style>
+  /** bn-onboard-modal-selected-wallet */
   section {
     color: inherit;
     font-size: inherit;
     font-family: inherit;
     display: block;
+    padding: 0 1rem;
   }
 
   footer {

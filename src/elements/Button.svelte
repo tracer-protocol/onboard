@@ -45,11 +45,13 @@
 
   .bn-onboard-prepare-button-right {
     position: absolute;
+    margin-right: 1rem;
     right: 0;
   }
 
   .bn-onboard-prepare-button-left {
     position: absolute;
+    margin-left: 1rem;
     left: 0;
   }
 

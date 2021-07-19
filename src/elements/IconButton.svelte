@@ -17,19 +17,21 @@
     display: flex;
     align-items: center;
     border: none;
-    margin: 0.33em 0;
     background: inherit;
     font-size: inherit;
-    width: 18em;
-    padding: 0.625em 1.25em;
-    transition: box-shadow 150ms ease-in-out, background 200ms ease-in-out;
-    border-radius: 40px;
+    transition: box-shadow 150ms ease-in-out, background 200ms ease-in-out,
+      opacity 200ms;
     cursor: pointer;
     color: inherit;
     line-height: 1.15;
     font-family: inherit;
     opacity: 1;
-    transition: opacity 200ms;
+
+    width: 100%;
+    border-radius: 0;
+    padding: 0 1.25em;
+    height: 100%;
+    margin: 0;
   }
 
   .disabled {
@@ -89,7 +91,7 @@
   }
 
   .bn-onboard-selected-wallet {
-    background: #c3c3c3;
+    background: #000240;
   }
 </style>
 
@@ -103,7 +105,7 @@
 >
   <div>
     {#if loadingWallet === text}
-      <Spinner />
+      <Spinner icon={true} />
     {:else if svg}
       {@html svg}
     {:else}

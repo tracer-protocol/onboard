@@ -35,18 +35,18 @@
   section {
     display: block;
     box-sizing: content-box;
-    background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
     font-family: inherit;
     font-size: inherit;
-    padding: 1.33em;
-    max-width: 422px;
-    padding: 1rem 0 !important;
     position: relative;
     overflow: hidden;
-    max-width: 37em;
-    color: #4a4a4a;
+
+    background: #00125d;
+    font-weight: lighter !important;
+    color: #fff;
+    max-width: 422px;
+    padding: 1rem 0;
   }
 
   /* .bn-onboard-modal-content-close  */
@@ -59,6 +59,7 @@
     right: 1.33em;
     font-size: inherit;
     font-family: inherit;
+    border: 1px solid #3da8f5;
     border-radius: 20px;
     transition: background 200ms ease-in-out;
     display: flex;
@@ -69,13 +70,14 @@
   /* .bn-onboard-modal-content-close:hover  */
   div:hover {
     cursor: pointer;
-    background: #eeeeee;
+    background: #fff;
   }
 
   /* .bn-onboard-modal-content-close  */
   svg {
     width: 14px;
     height: 14px;
+    fill: #3da8f5;
   }
 
   .bn-onboard-dark-mode-close-background:hover {

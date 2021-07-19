@@ -12,11 +12,11 @@
     font-size: inherit;
     font-family: inherit;
     margin-bottom: 1em;
+    padding: 0 1rem;
   }
 
   /* .bn-onboard-modal-content-header-icon */
   div {
-    display: flex;
     justify-content: center;
     align-items: center;
     font-size: inherit;
@@ -24,14 +24,18 @@
     padding: 0.6em;
     border-radius: 30px;
     background: #eeeeee;
+
+    display: none; /** to add back display: flex*/
   }
 
   /* .bn-onboard-modal-content-header-heading */
+
   h3 {
-    font-weight: bold;
+    font-weight: lighter;
     font-size: 1.33em;
+    color: inherit;
     font-family: inherit;
-    margin: 0 0 0 0.5em;
+    margin: 0;
   }
 </style>
 

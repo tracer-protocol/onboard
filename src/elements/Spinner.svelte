@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Button from '../elements/Button.svelte'
   export let description: string = ''
+  export let icon: boolean = false
 </script>
 
 <style>
@@ -32,7 +32,7 @@
     display: inline-block;
     position: relative;
     min-width: 100px;
-    height: 55px;
+    margin: 1rem;
   }
   :global(.bn-onboard-loading) :global(div) {
     box-sizing: border-box;
@@ -46,10 +46,19 @@
     animation: bn-onboard-loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: currentColor transparent transparent transparent;
   }
+
+  .bn-onboard-loading.icon {
+    min-width: 50px;
+    margin: auto;
+  }
+
+  .bn-onboard-loading svg {
+    fill: #fff;
+  }
 </style>
 
 <div class="bn-onboard-loading-container">
-  <div class="bn-onboard-custom bn-onboard-loading">
+  <div class="bn-onboard-custom bn-onboard-loading" class:icon>
     <svg
       id="eaGBD5e1KEP1"
       xmlns="http://www.w3.org/2000/svg"

@@ -258,6 +258,8 @@
   /* .bn-onboard-select-description, .bn-onboard-select-wallet-definition */
   p {
     font-size: 0.889em;
+    padding: 0 1rem;
+    color: #005ea4;
     margin: 1.6em 0 0 0;
     font-family: inherit;
   }
@@ -268,12 +270,14 @@
     font-size: inherit;
     font-family: inherit;
     justify-content: space-between;
+
+    padding: 0 1rem;
   }
 
   /* .bn-onboard-select-wallet-info */
   div span {
-    color: #4a90e2;
     font-size: inherit;
+    color: inherit;
     font-family: inherit;
     margin-top: 0.66em;
     cursor: pointer;
@@ -281,6 +285,7 @@
   .bn-onboard-modal-terms-of-service {
     display: flex;
     align-items: center;
+    padding: 0 1rem;
   }
   .bn-onboard-modal-terms-of-service-check-box {
     margin-right: 7px;

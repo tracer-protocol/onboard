@@ -285,6 +285,10 @@
   /* .bn-onboard-prepare-description */
   p {
     font-size: 0.889em;
+    padding: 0 1rem;
+    color: #3da8f5;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #002886;
     font-family: inherit;
     margin: 1em 0;
   }
@@ -295,7 +299,7 @@
     font-size: 0.889em;
     font-family: inherit;
     display: block;
-    margin-bottom: 0.75em;
+    margin: 0 1rem 0.75em 1rem;
     padding: 0.5em;
     border: 1px solid #e2504a;
     border-radius: 5px;
@@ -307,7 +311,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 2.5rem;
     position: relative;
   }
 
@@ -359,12 +362,7 @@
         </Button>
       {/if}
       {#if errorMsg}
-        <Button
-          position={!activeModal.button ? 'right' : ''}
-          onclick={doAction}
-        >
-          Try Again
-        </Button>
+        <Button onclick={doAction}>Try Again</Button>
       {:else}
         <div />
       {/if}

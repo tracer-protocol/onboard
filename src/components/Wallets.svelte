@@ -38,7 +38,14 @@
   }
 
   ul li {
-    padding: 0 0.25em;
+    width: 100%;
+    padding: 0;
+    height: 63px;
+    transition: 0.1s;
+  }
+
+  ul li:hover {
+    background: #002886;
   }
 
   div {
