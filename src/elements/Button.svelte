@@ -6,8 +6,8 @@
   // If this is a CTA Button then we want to emphasize it
   export let cta: boolean = true
   // If this is the help button
-  export let help: boolean = false 
-
+  export let help: boolean = false
+  export let primary: boolean = false
 </script>
 
 <style>
@@ -16,14 +16,27 @@
     background: inherit;
     font-size: 0.889em;
     font-family: inherit;
-    padding: 0.55em 1.4em;
+    padding: 0 1.4em;
     cursor: pointer;
-    color: #4a90e2;
+    color: #3da8f5;
     font-family: inherit;
-    transition: background 150ms ease-in-out;
     line-height: 1.15;
     opacity: 1;
-    transition: opacity 200ms;
+    transition: background 150ms ease-in-out, opacity 200ms;
+    height: 28px;
+    line-height: 28px;
+  }
+
+  .primary {
+    background: #3da8f5 0% 0% no-repeat padding-box;
+    color: #fff;
+    opacity: 1;
+  }
+
+  .primary:hover,
+  .cta.primary:hover {
+    background: #00125d;
+    color: #3da8f5;
   }
 
   button:focus {
@@ -46,16 +59,16 @@
     opacity: 0.4;
   }
   .cta {
-    border: 1px solid #4a90e2;
-    border-radius: 40px;
+    border: 1px solid #3da8f5;
+    border-radius: 20px;
+  }
+
+  .cta:hover {
+    background: #fff;
   }
 
   .help {
     margin-left: 0.5rem;
-  }
-
-  .cta:hover {
-    background: #ecf3fc;
   }
 </style>
 
@@ -72,6 +85,7 @@
   class:bn-onboard-dark-mode-link={$app.darkMode}
   class:bn-onboard-dark-mode-background-hover={$app.darkMode}
   class:help
+  class:primary
 >
   <slot />
 </button>

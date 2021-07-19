@@ -23,6 +23,7 @@ export interface WalletSelectModuleOptions {
   description?: string
   wallets?: Array<WalletModule | WalletInitOptions>
   explanation?: string
+  getHelpLink?: string
   agreement?: TermsOfServiceAgreementOptions
 }
 
@@ -32,6 +33,7 @@ export interface WalletSelectModule {
   wallets: Array<WalletModule | WalletInitOptions>
   explanation?: string
   agreement?: TermsOfServiceAgreementOptions
+  getHelpLink?: string
 }
 
 export interface TermsOfServiceAgreementOptions {
@@ -73,6 +75,7 @@ export interface WalletSelectModalData {
   heading: string
   description: string
   explanation?: string
+  getHelpLink?: string
   primaryWallets: WalletModule[]
   secondaryWallets: WalletModule[] | undefined
 }

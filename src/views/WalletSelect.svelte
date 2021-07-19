@@ -3,7 +3,6 @@
   import { get } from 'svelte/store'
   import { fade } from 'svelte/transition'
   import { onDestroy, onMount } from 'svelte'
-
   import { app, walletInterface, wallet, resetWalletState } from '../stores'
 
   import Modal from '../components/Modal.svelte'
@@ -20,7 +19,8 @@
     getAddress,
     getBalance,
     getNetwork,
-    networkName
+    networkName,
+    openLink
   } from '../utilities'
 
   import {
@@ -46,7 +46,8 @@
   let selectedWalletModule: WalletModule | null
 
   const { mobileDevice, os } = get(app)
-  let { heading, description, explanation, wallets, agreement } = module
+  let { heading, description, explanation, wallets, agreement, getHelpLink } =
+    module
 
   const { termsUrl, privacyUrl, version } = agreement || {}
   const {
@@ -146,6 +147,7 @@
       heading,
       description,
       explanation,
+      getHelpLink,
       primaryWallets,
       secondaryWallets
     }
@@ -205,6 +207,7 @@
         modalData = {
           heading,
           description,
+          getHelpLink,
           explanation,
           primaryWallets,
           secondaryWallets
@@ -321,11 +324,15 @@
         {walletsDisabled}
       />
       <div class="bn-onboard-custom bn-onboard-select-info-container">
-        <span
-          class="bn-onboard-custom bn-onboard-select-wallet-info"
-          on:click={() => (showWalletDefinition = !showWalletDefinition)}
-        >
-          What is a wallet?
+        <span class="bn-onboard-custom bn-onboard-select-wallet-info">
+          Are you new?
+          <Button
+            help={true}
+            primary={true}
+            onclick={() => openLink(modalData?.getHelpLink)}
+          >
+            Get Started
+          </Button>
         </span>
         {#if mobileDevice}
           <Button cta={false} onclick={() => finish({ completed: false })}

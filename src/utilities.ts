@@ -394,6 +394,14 @@ export function createInterval(func: any, interval: number) {
   }
 }
 
-export function openLink(url: string) {
-  window.open(url)
+export function openLink(url: string | undefined) {
+  try {
+    if (!url) {
+      console.error('Failed to open window: Url undefined')
+    } else {
+      window.open(url, '_blank', 'noopener')
+    }
+  } catch (err) {
+    console.error('Failed to open window', err)
+  }
 }

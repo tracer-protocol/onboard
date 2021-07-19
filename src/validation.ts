@@ -203,6 +203,7 @@ function validateWalletSelect(
     heading,
     description,
     explanation,
+    getHelpLink,
     wallets,
     agreement,
     ...otherParams
@@ -210,7 +211,14 @@ function validateWalletSelect(
 
   invalidParams(
     otherParams,
-    ['heading', 'description', 'explanation', 'wallets', 'agreement'],
+    [
+      'heading',
+      'description',
+      'explanation',
+      'wallets',
+      'agreement',
+      'getHelpLink'
+    ],
     'walletSelect'
   )
 
@@ -231,6 +239,13 @@ function validateWalletSelect(
   validateType({
     name: 'explanation',
     value: explanation,
+    type: 'string',
+    optional: true
+  })
+
+  validateType({
+    name: 'getHelpLink',
+    value: getHelpLink,
     type: 'string',
     optional: true
   })
@@ -529,6 +544,7 @@ export function validateModal(modal: WalletCheckModal): never | void {
     description,
     button,
     eventCode,
+    getHelpLink,
     action,
     icon,
     html,
@@ -537,7 +553,16 @@ export function validateModal(modal: WalletCheckModal): never | void {
 
   invalidParams(
     otherParams,
-    ['heading', 'description', 'button', 'eventCode', 'action', 'icon', 'html'],
+    [
+      'heading',
+      'description',
+      'button',
+      'eventCode',
+      'action',
+      'icon',
+      'html',
+      'getHelpLink'
+    ],
     'modal'
   )
 
@@ -548,6 +573,13 @@ export function validateModal(modal: WalletCheckModal): never | void {
     name: 'action',
     value: action,
     type: 'function',
+    optional: true
+  })
+
+  validateType({
+    name: 'getHelpLink',
+    value: getHelpLink,
+    type: 'string',
     optional: true
   })
 

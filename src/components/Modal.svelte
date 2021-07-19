@@ -41,6 +41,8 @@
     font-family: inherit;
     font-size: inherit;
     padding: 1.33em;
+    max-width: 422px;
+    padding: 1rem 0 !important;
     position: relative;
     overflow: hidden;
     max-width: 37em;

@@ -16,7 +16,7 @@
     balance
   } from '../stores'
   import { validateModal, validateWalletCheckModule } from '../validation'
-  import { isPromise } from '../utilities'
+  import { isPromise, openLink } from '../utilities'
 
   import Modal from '../components/Modal.svelte'
   import ModalHeader from '../components/ModalHeader.svelte'
@@ -191,15 +191,6 @@
     actionResolved = undefined
     activeModal = undefined
     currentModule = undefined
-  }
-  function openNewWindow() {
-    try {
-      if (activeModal) {
-        window.open(activeModal.getHelpLink, '_blank', 'noopener')
-      }
-    } catch (err) {
-      console.error('Failed to open window', err)
-    }
   }
 
   function runModules(modules: WalletCheckModule[]) {
@@ -382,7 +373,12 @@
         {#if activeModal.getHelpLink}
           <section class="bn-onboard-custom bn-onboard-get-help-container">
             Having trouble?
-            <Button help={true} onclick={() => openNewWindow()}>Get Help</Button>
+            <Button
+              help={true}
+              primary={true}
+              onclick={() => openLink(activeModal?.getHelpLink)}
+              >Get Help</Button
+            >
           </section>
         {/if}
       {/if}
