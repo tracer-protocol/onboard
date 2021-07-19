@@ -5,6 +5,9 @@
   export let disabled: boolean = false
   // If this is a CTA Button then we want to emphasize it
   export let cta: boolean = true
+  // If this is the help button
+  export let help: boolean = false 
+
 </script>
 
 <style>
@@ -47,6 +50,10 @@
     border-radius: 40px;
   }
 
+  .help {
+    margin-left: 0.5rem;
+  }
+
   .cta:hover {
     background: #ecf3fc;
   }
@@ -64,6 +71,7 @@
     position !== 'right'}
   class:bn-onboard-dark-mode-link={$app.darkMode}
   class:bn-onboard-dark-mode-background-hover={$app.darkMode}
+  class:help
 >
   <slot />
 </button>

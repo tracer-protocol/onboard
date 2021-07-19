@@ -192,6 +192,15 @@
     activeModal = undefined
     currentModule = undefined
   }
+  function openNewWindow() {
+    try {
+      if (activeModal) {
+        window.open(activeModal.getHelpLink, '_blank', 'noopener')
+      }
+    } catch (err) {
+      console.error('Failed to open window', err)
+    }
+  }
 
   function runModules(modules: WalletCheckModule[]) {
     return new Promise(
@@ -304,12 +313,17 @@
   /* .bn-onboard-prepare-button-container */
   div {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 2.5rem;
     position: relative;
   }
 
+  /* .bn-onboard-get-help-container */
+  .bn-onboard-get-help-container {
+    flex-direction: row;
+  }
   section {
     display: flex;
     justify-content: center;
@@ -365,10 +379,13 @@
       {/if}
       {#if loading}
         <Spinner />
+        {#if activeModal.getHelpLink}
+          <section class="bn-onboard-custom bn-onboard-get-help-container">
+            Having trouble?
+            <Button help={true} onclick={() => openNewWindow()}>Get Help</Button>
+          </section>
+        {/if}
       {/if}
-      <Button position="left" onclick={() => handleExit(false)} cta={false}
-        >Dismiss</Button
-      >
     </div>
   </Modal>
 {/if}

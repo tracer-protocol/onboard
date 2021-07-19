@@ -49,14 +49,15 @@
 
   /* .bn-onboard-modal-content-close  */
   div {
-    height: 0.66em;
+    width: 56px;
+    height: 28px;
     position: absolute;
     padding: 0.25em;
-    top: 1.33em;
+    top: 1em;
     right: 1.33em;
     font-size: inherit;
     font-family: inherit;
-    border-radius: 5px;
+    border-radius: 20px;
     transition: background 200ms ease-in-out;
     display: flex;
     justify-content: center;
@@ -71,8 +72,8 @@
 
   /* .bn-onboard-modal-content-close  */
   svg {
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
   }
 
   .bn-onboard-dark-mode-close-background:hover {

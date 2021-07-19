@@ -7,7 +7,7 @@ import {
 import { connectIcon } from './icons'
 
 function connect(options: WalletCheckCustomOptions = {}): WalletCheckModule {
-  const { heading, description, icon, html, button } = options
+  const { heading, description, icon, html, button, getHelpLink } = options
 
   return async (
     stateAndHelpers: StateAndHelpers
@@ -35,6 +35,9 @@ function connect(options: WalletCheckCustomOptions = {}): WalletCheckModule {
         description:
           description ||
           `This dapp requires access to your wallet, please login and authorize access to your ${wallet.name} accounts to continue.`,
+        getHelpLink:
+          getHelpLink ||
+          'https://docs.tracer.finance/faqs/tracer-faq#wallet-connect',
         eventCode: 'loginFail',
         action: wallet.connect,
         icon: icon || connectIcon,

@@ -58,6 +58,7 @@ export interface Connect {
 export interface WalletCheckModal {
   heading: string
   description: string
+  getHelpLink?: string
   html?: string
   button?: {
     onclick: () => void
@@ -421,6 +422,7 @@ export type AllWalletInitOptions = CommonWalletOptions &
 export interface WalletCheckCustomOptions {
   heading?: string
   description?: string
+  getHelpLink?: string
   minimumBalance?: string
   icon?: string
   button?: {

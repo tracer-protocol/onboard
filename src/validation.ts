@@ -414,6 +414,7 @@ function validateWalletCheck(
         checkName,
         heading,
         description,
+        getHelpLink,
         minimumBalance,
         html,
         icon,
@@ -427,6 +428,7 @@ function validateWalletCheck(
           'checkName',
           'heading',
           'description',
+          'getHelpLink',
           'html',
           'icon',
           'button',
@@ -447,6 +449,13 @@ function validateWalletCheck(
       validateType({
         name: 'description',
         value: description,
+        type: 'string',
+        optional: true
+      })
+
+      validateType({
+        name: 'getHelpLink',
+        value: getHelpLink,
         type: 'string',
         optional: true
       })
