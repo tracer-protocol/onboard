@@ -31,7 +31,7 @@ function connect(options: WalletCheckCustomOptions = {}): WalletCheckModule {
 
     if (!stateStore.address.get() && wallet && wallet.name) {
       return {
-        heading: heading || 'Login and Authorize Your Wallet',
+        heading: heading || 'Connect Wallet',
         description:
           description ||
           `Connecting to ${wallet.name}`,
