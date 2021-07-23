@@ -45,7 +45,7 @@
     background: #00125d;
     font-weight: lighter !important;
     color: #fff;
-    min-width: 422px;
+    width: 422px;
     padding: 1rem 0;
   }
 
