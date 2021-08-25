@@ -280,7 +280,6 @@
     color: inherit;
     font-family: inherit;
     margin-top: 0.66em;
-    cursor: pointer;
   }
   .bn-onboard-modal-terms-of-service {
     display: flex;

@@ -89,28 +89,18 @@
     </li>
   {/each}
 
-  {#if modalData.secondaryWallets && modalData.secondaryWallets.length && !showingAllWalletModules}
-    <div>
-      <Button disabled={walletsDisabled} onclick={showAllWallets}
-        >Show More</Button
-      >
-    </div>
-  {/if}
-
-  {#if showingAllWalletModules}
-    {#each modalData.secondaryWallets as wallet, i (wallet.name)}
-      <li>
-        <IconButton
-          disabled={walletsDisabled}
-          onclick={() => handleWalletSelect(wallet)}
-          iconSrc={wallet.iconSrc}
-          iconSrcSet={wallet.iconSrcSet}
-          svg={wallet.svg}
-          text={wallet.name}
-          currentlySelected={wallet.name === selectedWallet.name}
-          {loadingWallet}
-        />
-      </li>
-    {/each}
-  {/if}
+  {#each modalData.secondaryWallets as wallet, i (wallet.name)}
+    <li>
+      <IconButton
+        disabled={walletsDisabled}
+        onclick={() => handleWalletSelect(wallet)}
+        iconSrc={wallet.iconSrc}
+        iconSrcSet={wallet.iconSrcSet}
+        svg={wallet.svg}
+        text={wallet.name}
+        currentlySelected={wallet.name === selectedWallet.name}
+        {loadingWallet}
+      />
+    </li>
+  {/each}
 </ul>
