@@ -252,6 +252,8 @@
       walletSelectCompleted: options.completed
     }))
   }
+
+  let showConnection: boolean;
 </script>
 
 <style>
@@ -265,22 +267,22 @@
   }
 
   /* .bn-onboard-select-info-container */
-  div {
+  .bn-onboard-select-info-container  {
     display: flex;
     font-size: inherit;
     font-family: inherit;
     justify-content: space-between;
-
     padding: 0 1rem;
   }
 
   /* .bn-onboard-select-wallet-info */
-  div span {
+  .bn-onboard-select-wallet-info {
     font-size: inherit;
     color: inherit;
     font-family: inherit;
     margin-top: 0.66em;
   }
+
   .bn-onboard-modal-terms-of-service {
     display: flex;
     align-items: center;
@@ -289,45 +291,112 @@
   .bn-onboard-modal-terms-of-service-check-box {
     margin-right: 7px;
   }
+
+  .terms-icon {
+    margin: 30px auto 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #3da8f5;
+  }
+
+  .terms-title {
+    display: flex;
+    justify-content: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .terms-content {
+    margin-bottom: 10px;
+  }
+
+  .terms-link {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .terms-link a {
+    color: #3da8f5;
+  }
+
+  button {
+    width: 100%;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    background-color: #0210BE;
+    padding: 20px 0;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .progress {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .progress-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #002886;
+  }
+
+  .progress-indicator-selected {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #002886;
+    border: 3px solid #3da8f5;
+  }
 </style>
 
 {#if modalData}
-  <Modal closeModal={() => finish({ completed: false })}>
-    <ModalHeader icon={walletIcon} heading={modalData.heading} />
-    {#if showTermsOfService}
-      <p>
-        <label class="bn-onboard-custom bn-onboard-modal-terms-of-service">
-          <input
-            class="bn-onboard-custom bn-onboard-modal-terms-of-service-check-box"
-            type="checkbox"
-            bind:checked={agreed}
-          />
-          <span>
+  {#if showConnection}
+    <Modal closeModal={() => finish({ completed: false })}>
+      <ModalHeader icon={walletIcon} heading={modalData.heading} />
+      {#if showTermsOfService}
+        <p>
+          <label class="bn-onboard-custom bn-onboard-modal-terms-of-service">
+            <input
+                    class="bn-onboard-custom bn-onboard-modal-terms-of-service-check-box"
+                    type="checkbox"
+                    bind:checked={agreed}
+            />
+            <span>
             I agree to the
-            {#if termsUrl}<a href={termsUrl} target="_blank"
-                >Terms & Conditions</a
+              {#if termsUrl}<a href={termsUrl} target="_blank"
+              >Terms & Conditions</a
               >{privacyUrl ? ' and' : '.'}
             {/if}
-            {#if privacyUrl}<a href={privacyUrl} target="_blank"
-                >Privacy Policy</a
+              {#if privacyUrl}<a href={privacyUrl} target="_blank"
+              >Privacy Policy</a
               >.{/if}
           </span>
-        </label>
-      </p>
-    {/if}
-    {#if !selectedWalletModule}
-      <p class="bn-onboard-custom bn-onboard-select-description">
-        {@html modalData.description}
-      </p>
-      <Wallets
-        {modalData}
-        {handleWalletSelect}
-        {loadingWallet}
-        {showingAllWalletModules}
-        {showAllWallets}
-        {walletsDisabled}
-      />
-      <div class="bn-onboard-custom bn-onboard-select-info-container">
+          </label>
+        </p>
+      {/if}
+      {#if !selectedWalletModule}
+<!--        <p class="bn-onboard-custom bn-onboard-select-description">-->
+<!--          {@html modalData.description}-->
+<!--        </p>-->
+        <Wallets
+          {modalData}
+          {handleWalletSelect}
+          {loadingWallet}
+          {showingAllWalletModules}
+          {showAllWallets}
+          {walletsDisabled}
+        />
+        <div class="progress"><div class="progress-indicator"></div><div class="progress-indicator-selected"></div></div>
+        <div class="bn-onboard-custom bn-onboard-select-info-container">
         <span class="bn-onboard-custom bn-onboard-select-wallet-info">
           Are you new?
           <Button
@@ -338,29 +407,46 @@
             Get Started
           </Button>
         </span>
-        {#if mobileDevice}
-          <Button cta={false} onclick={() => finish({ completed: false })}
+          {#if mobileDevice}
+            <Button cta={false} onclick={() => finish({ completed: false })}
             >Dismiss</Button
+            >
+          {/if}
+        </div>
+        {#if showWalletDefinition}
+          <p
+                  in:fade
+                  class="bn-onboard-custom bn-onboard-select-wallet-definition"
           >
+            {@html modalData.explanation}
+          </p>
         {/if}
-      </div>
-      {#if showWalletDefinition}
-        <p
-          in:fade
-          class="bn-onboard-custom bn-onboard-select-wallet-definition"
-        >
-          {@html modalData.explanation}
-        </p>
-      {/if}
-    {:else}
-      <SelectedWallet
-        {selectedWalletModule}
-        onBack={() => {
+      {:else}
+        <SelectedWallet
+                {selectedWalletModule}
+                onBack={() => {
           selectedWalletModule = null
           walletAlreadyInstalled = undefined
         }}
-        {installMessage}
-      />
-    {/if}
-  </Modal>
+                {installMessage}
+        />
+      {/if}
+    </Modal>
+  {:else}
+    <Modal closeModal={() => finish({ completed: false })}>
+      <div class="terms-icon"></div>
+      <div class="terms-title">Connect Wallet</div>
+      <div class="terms-content">
+        By connecting your wallet, you accept Tracer’s Terms of Use and represent and warrant that you are not a resident of any of the following countries:
+      </div>
+      <div class="terms-content">
+        China, the United States, Antigua and Barbuda, Algeria, Bangladesh, Bolivia, Belarus, Burundi, Myanmar (Burma), Cote D’Ivoire (Ivory Coast), Crimea and Sevastopol, Cuba, Democratic Republic of Congo, Ecuador, Iran, Iraq, Liberia, Libya, Magnitsky, Mali, Morocco, Nepal, North Korea, Somalia, Sudan, Syria, Venezuela, Yemen or Zimbabwe.
+      </div>
+      <div class="terms-link">
+        Read the&nbsp;<a href="/terms-of-use" target="_blank">Terms of Use</a>
+      </div>
+      <div class="progress"><div class="progress-indicator-selected"></div><div class="progress-indicator"></div></div>
+      <button on:click={() => (showConnection = true)}>Ok, let's connect</button>
+    </Modal>
+  {/if}
 {/if}

@@ -29,7 +29,6 @@
     flex-flow: row wrap;
     align-items: center;
     list-style-type: none;
-    margin: 1.25em 0;
     padding: 0;
     font-family: inherit;
     font-size: inherit;
@@ -45,16 +44,7 @@
   }
 
   ul li:hover {
-    background: #002886;
-  }
-
-  div {
-    width: 100%;
-    display: flex;
-    font-size: inherit;
-    font-family: inherit;
-    justify-content: center;
-    margin-top: 1.25em;
+    background: #3da8f5;
   }
 
   ::-webkit-scrollbar {
@@ -70,6 +60,11 @@
       max-height: 66vh;
       overflow-y: scroll;
     }
+  }
+
+  .border-bottom {
+    width: 100%;
+    border-bottom: 1px solid #e6e6e6;
   }
 </style>
 
@@ -112,5 +107,6 @@
         />
       </li>
     {/each}
+    <div class="border-bottom"></div>
   {/if}
 </ul>

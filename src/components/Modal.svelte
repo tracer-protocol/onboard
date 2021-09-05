@@ -4,8 +4,6 @@
   import Branding from '../elements/Branding.svelte'
   export let closeModal: () => void = () => {}
   export let closeable: boolean = true
-
-  let closeHovered: boolean
 </script>
 
 <style>
@@ -34,6 +32,7 @@
   /* .bn-onboard-modal-content  */
   section {
     display: block;
+    background-color: #ffffff;
     box-sizing: content-box;
     border-radius: 10px;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
@@ -41,47 +40,19 @@
     font-size: inherit;
     position: relative;
     overflow: hidden;
-
-    background: #00125d;
-    font-weight: lighter !important;
-    color: #fff;
     width: 422px;
-    padding: 1rem 0;
+    padding: 20px;
   }
 
-  /* .bn-onboard-modal-content-close  */
-  div {
-    width: 56px;
-    height: 28px;
-    position: absolute;
-    padding: 0.25em;
-    top: 1em;
-    right: 1.33em;
-    font-size: inherit;
-    font-family: inherit;
-    border: 1px solid #3da8f5;
-    border-radius: 20px;
-    transition: background 200ms ease-in-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* .bn-onboard-modal-content-close:hover  */
-  div:hover {
-    cursor: pointer;
-    background: #fff;
-  }
-
-  /* .bn-onboard-modal-content-close  */
   svg {
-    width: 14px;
-    height: 14px;
-    fill: #3da8f5;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
   }
-
-  .bn-onboard-dark-mode-close-background:hover {
-    background: #00222c;
+  svg:hover {
+    cursor: pointer;
   }
 
   .no-padding-branding {
@@ -109,48 +80,8 @@
         class="bn-onboard-custom bn-onboard-modal-content-close"
         class:bn-onboard-dark-mode-close-background={$app.darkMode}
         on:click={closeModal}
-        on:mouseenter={() => (closeHovered = true)}
-        on:mouseleave={() => (closeHovered = false)}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          x="0px"
-          y="0px"
-          viewBox="0 0 47.971 47.971"
-          style="enable-background:new 0 0 47.971 47.971; transition: fill 150ms
-          ease-in-out;"
-          fill={closeHovered
-            ? $app.darkMode
-              ? '#ffffff'
-              : '#4a4a4a'
-            : '#9B9B9B'}
-          xml:space="preserve"
-        >
-          <g>
-            <path
-              d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88
-              c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,3.071,0,4.242
-              C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,0.879,2.121,0.879
-              s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z"
-            />
-          </g>
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-          <g />
-        </svg>
+        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="xmark" class="svg-inline--fa fa-xmark fa-w-10" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"></path></svg>
       </div>
     {/if}
   </section>

@@ -19,8 +19,6 @@
     padding: 0 1.4em;
     cursor: pointer;
     color: #3da8f5;
-    font-family: inherit;
-    line-height: 1.15;
     opacity: 1;
     transition: background 150ms ease-in-out, opacity 200ms;
     height: 28px;
@@ -28,15 +26,14 @@
   }
 
   .primary {
-    background: #3da8f5 0% 0% no-repeat padding-box;
-    color: #fff;
-    opacity: 1;
+    color: #3da8f5;
+    border: 1px solid #3da8f5;
   }
 
   .primary:hover,
   .cta.primary:hover {
-    background: #00125d;
-    color: #3da8f5;
+    background: #3da8f5;
+    color: #ffffff;
   }
 
   button:focus {

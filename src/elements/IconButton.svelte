@@ -79,7 +79,6 @@
 
   i {
     font-size: 0.8rem;
-    font-weight: lighter;
     color: inherit;
     text-decoration: underline;
   }
