@@ -159,6 +159,8 @@
     module: WalletModule,
     autoSelected?: boolean
   ) {
+    localStorage.setItem('onboard.acceptedTerms', 'true');
+
     const currentWalletInterface = get(walletInterface)
     const { browser, os } = get(app)
 
@@ -360,7 +362,7 @@
 </style>
 
 {#if modalData}
-  {#if showConnection}
+  {#if showConnection || localStorage.getItem('onboard.acceptedTerms') === 'true'}
     <Modal closeModal={() => finish({ completed: false })}>
       <ModalHeader icon={walletIcon} heading={modalData.heading} />
       {#if showTermsOfService}
