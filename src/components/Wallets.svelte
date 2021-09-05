@@ -11,7 +11,7 @@
   export let modalData: WalletSelectModalData
   export let handleWalletSelect: (wallet: WalletModule) => void
   export let loadingWallet: string | undefined
-  export let showingAllWalletModules: boolean = true 
+  export let showingAllWalletModules: boolean = false
   export let showAllWallets: () => void
   export let walletsDisabled: boolean = false
 
@@ -69,6 +69,46 @@
 </style>
 
 <ul class="bn-onboard-custom bn-onboard-modal-select-wallets">
+  <!--{#each modalData.primaryWallets as wallet, i (wallet.name)}-->
+  <!--  <li>-->
+  <!--    <IconButton-->
+  <!--      disabled={walletsDisabled}-->
+  <!--      onclick={() => handleWalletSelect(wallet)}-->
+  <!--      iconSrc={wallet.iconSrc}-->
+  <!--      iconSrcSet={wallet.iconSrcSet}-->
+  <!--      svg={wallet.svg}-->
+  <!--      text={wallet.name}-->
+  <!--      currentlySelected={wallet.name === selectedWallet.name}-->
+  <!--      {loadingWallet}-->
+  <!--    />-->
+  <!--  </li>-->
+  <!--{/each}-->
+
+  <!--{#if modalData.secondaryWallets && modalData.secondaryWallets.length && !showingAllWalletModules}-->
+  <!--  <div>-->
+  <!--    <Button disabled={walletsDisabled} onclick={showAllWallets}-->
+  <!--      >Show More</Button-->
+  <!--    >-->
+  <!--  </div>-->
+  <!--{/if}-->
+
+  <!--{#if showingAllWalletModules}-->
+  <!--  {#each modalData.secondaryWallets as wallet, i (wallet.name)}-->
+  <!--    <li>-->
+  <!--      <IconButton-->
+  <!--        disabled={walletsDisabled}-->
+  <!--        onclick={() => handleWalletSelect(wallet)}-->
+  <!--        iconSrc={wallet.iconSrc}-->
+  <!--        iconSrcSet={wallet.iconSrcSet}-->
+  <!--        svg={wallet.svg}-->
+  <!--        text={wallet.name}-->
+  <!--        currentlySelected={wallet.name === selectedWallet.name}-->
+  <!--        {loadingWallet}-->
+  <!--      />-->
+  <!--    </li>-->
+  <!--  {/each}-->
+<!--    <div class="border-bottom"></div>-->
+  <!--{/if}-->
   {#each modalData.primaryWallets as wallet, i (wallet.name)}
     <li>
       <IconButton
@@ -87,7 +127,7 @@
   {#if modalData.secondaryWallets && modalData.secondaryWallets.length && !showingAllWalletModules}
     <div>
       <Button disabled={walletsDisabled} onclick={showAllWallets}
-        >Show More</Button
+      >Show More</Button
       >
     </div>
   {/if}
@@ -107,6 +147,6 @@
         />
       </li>
     {/each}
-    <div class="border-bottom"></div>
   {/if}
 </ul>
+<div class="border-bottom"></div>

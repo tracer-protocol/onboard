@@ -86,7 +86,7 @@
 
   let loadingWallet: string | undefined = undefined
 
-  let showingAllWalletModules = true 
+  let showingAllWalletModules = false
   const showAllWallets = () => (showingAllWalletModules = true)
 
   function lockScroll() {
@@ -309,6 +309,7 @@
 
   .terms-content {
     margin-bottom: 10px;
+    text-align: center;
   }
 
   .terms-link {

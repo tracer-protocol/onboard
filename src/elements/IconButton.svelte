@@ -89,9 +89,9 @@
     }
   }
 
-  .bn-onboard-selected-wallet {
-    background: #000240;
-  }
+  /*.bn-onboard-selected-wallet {*/
+  /*  background: #000240;*/
+  /*}*/
 </style>
 
 <button
