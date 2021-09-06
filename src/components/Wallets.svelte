@@ -83,7 +83,6 @@
   <!--    />-->
   <!--  </li>-->
   <!--{/each}-->
-
   <!--{#if modalData.secondaryWallets && modalData.secondaryWallets.length && !showingAllWalletModules}-->
   <!--  <div>-->
   <!--    <Button disabled={walletsDisabled} onclick={showAllWallets}-->
@@ -91,7 +90,6 @@
   <!--    >-->
   <!--  </div>-->
   <!--{/if}-->
-
   <!--{#if showingAllWalletModules}-->
   <!--  {#each modalData.secondaryWallets as wallet, i (wallet.name)}-->
   <!--    <li>-->
@@ -107,8 +105,9 @@
   <!--      />-->
   <!--    </li>-->
   <!--  {/each}-->
-<!--    <div class="border-bottom"></div>-->
+  <!--    <div class="border-bottom"></div>-->
   <!--{/if}-->
+
   {#each modalData.primaryWallets as wallet, i (wallet.name)}
     <li>
       <IconButton
@@ -123,30 +122,28 @@
       />
     </li>
   {/each}
-
-  {#if modalData.secondaryWallets && modalData.secondaryWallets.length && !showingAllWalletModules}
-    <div>
-      <Button disabled={walletsDisabled} onclick={showAllWallets}
-      >Show More</Button
-      >
-    </div>
-  {/if}
-
-  {#if showingAllWalletModules}
-    {#each modalData.secondaryWallets as wallet, i (wallet.name)}
-      <li>
-        <IconButton
-          disabled={walletsDisabled}
-          onclick={() => handleWalletSelect(wallet)}
-          iconSrc={wallet.iconSrc}
-          iconSrcSet={wallet.iconSrcSet}
-          svg={wallet.svg}
-          text={wallet.name}
-          currentlySelected={wallet.name === selectedWallet.name}
-          {loadingWallet}
-        />
-      </li>
-    {/each}
-  {/if}
+  <!--{#if modalData.secondaryWallets && modalData.secondaryWallets.length && !showingAllWalletModules}-->
+  <!--  <div>-->
+  <!--    <Button disabled={walletsDisabled} onclick={showAllWallets}-->
+  <!--    >Show More</Button-->
+  <!--    >-->
+  <!--  </div>-->
+  <!--{/if}-->
+  <!--{#if showingAllWalletModules}-->
+  <!--  {#each modalData.secondaryWallets as wallet, i (wallet.name)}-->
+  <!--    <li>-->
+  <!--      <IconButton-->
+  <!--        disabled={walletsDisabled}-->
+  <!--        onclick={() => handleWalletSelect(wallet)}-->
+  <!--        iconSrc={wallet.iconSrc}-->
+  <!--        iconSrcSet={wallet.iconSrcSet}-->
+  <!--        svg={wallet.svg}-->
+  <!--        text={wallet.name}-->
+  <!--        currentlySelected={wallet.name === selectedWallet.name}-->
+  <!--        {loadingWallet}-->
+  <!--      />-->
+  <!--    </li>-->
+  <!--  {/each}-->
+  <!--{/if}-->
 </ul>
-<div class="border-bottom"></div>
+<div class="border-bottom" />
