@@ -386,7 +386,7 @@
         </g>
       </svg>
     </div>
-    <div>Confirm the prompt in your {activeModal.description} wallet.</div>
+    <div>{activeModal.description}</div>
 
     <!--    <ModalHeader icon={activeModal.icon || ''} heading={activeModal.heading} />-->
     <!--    <p class="bn-onboard-custom bn-onboard-prepare-description">-->

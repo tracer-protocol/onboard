@@ -46,11 +46,11 @@ function network(
         heading: heading || 'You Must Change Networks',
         description:
           description ||
-          `We've detected that you need to switch your wallet's network from <b>${networkName(
+          `We've detected that you need to switch your wallet's network from ${networkName(
             network
-          )}</b> to <b>${networkName(
+          )} to ${networkName(
             appNetworkId
-          )}</b> for this Dapp. <br><br> <i style="font-size: inherit; font-family: inherit;">*Some wallets may not support changing networks. If you can not change networks in your wallet you may consider switching to a different wallet.</i>`,
+          )} for this Dapp. Some wallets may not support changing networks. If you can not change networks in your wallet you may consider switching to a different wallet.`,
         eventCode: 'networkFail',
         button: button || {
           onclick: async () => {

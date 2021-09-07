@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
-  import Button from '../elements/Button.svelte'
+  // import Button from '../elements/Button.svelte'
   import IconButton from '../elements/IconButton.svelte'
   import { wallet } from '../stores'
   import {
@@ -11,8 +11,8 @@
   export let modalData: WalletSelectModalData
   export let handleWalletSelect: (wallet: WalletModule) => void
   export let loadingWallet: string | undefined
-  export let showingAllWalletModules: boolean = false
-  export let showAllWallets: () => void
+  // export let showingAllWalletModules: boolean = false
+  // export let showAllWallets: () => void
   export let walletsDisabled: boolean = false
 
   let selectedWallet: WritableStore
