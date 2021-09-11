@@ -64,23 +64,6 @@
 
   let walletsDisabled: boolean = showTermsOfService
 
-  let agreed: boolean | undefined = undefined
-
-  $: if (agreed) {
-    localStorage.setItem(
-      STORAGE_KEYS.TERMS_AGREEMENT,
-      JSON.stringify({
-        version,
-        terms: !!termsUrl,
-        privacy: !!privacyUrl
-      })
-    )
-    walletsDisabled = false
-  } else if (agreed === false) {
-    localStorage.removeItem(STORAGE_KEYS.TERMS_AGREEMENT)
-    walletsDisabled = true
-  }
-
   let primaryWallets: WalletModule[]
   let secondaryWallets: WalletModule[] | undefined
 
@@ -159,7 +142,7 @@
     module: WalletModule,
     autoSelected?: boolean
   ) {
-    localStorage.setItem('onboard.acceptedTerms', 'true')
+    localStorage.setItem('onboard.acceptedAllTerms', 'true')
 
     const currentWalletInterface = get(walletInterface)
     const { browser, os } = get(app)
@@ -255,6 +238,22 @@
     }))
   }
 
+  let agreedToTerms: boolean = localStorage.getItem('agreedToTerms') === 'true'
+  $: if (agreedToTerms) {
+    localStorage.setItem('agreedToTerms', 'true')
+  } else if (agreedToTerms === false) {
+    localStorage.setItem('agreedToTerms', 'false')
+  }
+
+  let agreedToAgreement: boolean =
+    localStorage.getItem('agreedToAgreement') === 'true'
+  $: if (agreedToAgreement) {
+    localStorage.setItem('agreedToAgreement', 'true')
+  } else if (agreedToAgreement === false) {
+    localStorage.setItem('agreedToAgreement', 'false')
+  }
+
+  let showAgreement: boolean
   let showConnection: boolean
 </script>
 
@@ -268,58 +267,51 @@
     font-family: inherit;
   }
 
-  /* .bn-onboard-select-info-container */
-  .bn-onboard-select-info-container {
+  .info-container {
     display: flex;
-    font-size: inherit;
-    font-family: inherit;
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 20px 20px 0;
   }
 
-  /* .bn-onboard-select-wallet-info */
-  .bn-onboard-select-wallet-info {
-    font-size: inherit;
-    color: inherit;
-    font-family: inherit;
-    margin-top: 0.66em;
-  }
-
-  .bn-onboard-modal-terms-of-service {
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-  }
-  .bn-onboard-modal-terms-of-service-check-box {
-    margin-right: 7px;
-  }
-
-  .terms-icon {
+  .icon {
     margin: 30px auto 20px;
     width: 50px;
     height: 50px;
   }
 
-  .terms-title {
+  .title {
     display: flex;
     justify-content: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .subtitle {
+    display: flex;
+    justify-content: center;
+    color: gray;
   }
 
   .terms-content {
-    margin-bottom: 10px;
     text-align: center;
+    color: gray;
   }
 
-  .terms-link {
+  .agreement-content {
+    text-align: center;
+    color: gray;
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  .link {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
+    color: gray;
   }
-  .terms-link a {
+  .link a {
     color: #3da8f5;
+    text-decoration: underline;
   }
 
   button {
@@ -330,13 +322,24 @@
     align-items: center;
     color: #ffffff;
     background-color: #0210be;
+    border: 1px solid #0210be;
     padding: 20px 0;
     border-radius: 10px;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  button.active {
+    transition: 0.5s;
+    opacity: 1;
     cursor: pointer;
+  }
+  button.active:hover {
+    color: #0210be;
+    background-color: #ffffff;
   }
 
   .progress {
-    width: 40px;
+    width: 80px;
     height: 40px;
     display: flex;
     justify-content: space-between;
@@ -359,37 +362,27 @@
     background-color: #002886;
     border: 3px solid #3da8f5;
   }
+
+  .check {
+    height: 60px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+  }
+  .check > * {
+    cursor: pointer;
+  }
+  .checkbox-text {
+    margin-left: 5px;
+    color: gray;
+  }
 </style>
 
 {#if modalData}
   <Modal closeModal={() => finish({ completed: false })}>
-    {#if showConnection || localStorage.getItem('onboard.acceptedTerms') === 'true'}
+    {#if showConnection || localStorage.getItem('onboard.acceptedAllTerms') === 'true'}
       <ModalHeader icon={walletIcon} heading={modalData.heading} />
-      {#if showTermsOfService}
-        <p>
-          <label class="bn-onboard-custom bn-onboard-modal-terms-of-service">
-            <input
-              class="bn-onboard-custom bn-onboard-modal-terms-of-service-check-box"
-              type="checkbox"
-              bind:checked={agreed}
-            />
-            <span>
-              I agree to the
-              {#if termsUrl}<a href={termsUrl} target="_blank"
-                  >Terms & Conditions</a
-                >{privacyUrl ? ' and' : '.'}
-              {/if}
-              {#if privacyUrl}<a href={privacyUrl} target="_blank"
-                  >Privacy Policy</a
-                >.{/if}
-            </span>
-          </label>
-        </p>
-      {/if}
       {#if !selectedWalletModule}
-        <!--        <p class="bn-onboard-custom bn-onboard-select-description">-->
-        <!--          {@html modalData.description}-->
-        <!--        </p>-->
         <Wallets
           {modalData}
           {handleWalletSelect}
@@ -398,17 +391,23 @@
           {showAllWallets}
           {walletsDisabled}
         />
-        {#if localStorage.getItem('onboard.acceptedTerms') !== 'true'}
+        {#if localStorage.getItem('onboard.acceptedAllTerms') !== 'true'}
+          <br />
           <div class="progress">
             <div
               class="progress-indicator"
-              on:click={() => (showConnection = false)}
-            />
-            <div class="progress-indicator-selected" />
+              on:click={() => {
+                showConnection = false
+                showAgreement = false
+              }}></div>
+            <div
+              class="progress-indicator"
+              on:click={() => (showConnection = false)}></div>
+            <div class="progress-indicator-selected"></div>
           </div>
         {/if}
-        <div class="bn-onboard-custom bn-onboard-select-info-container">
-          <span class="bn-onboard-custom bn-onboard-select-wallet-info">
+        <div class="info-container">
+          <span>
             Are you new?
             <Button
               help={true}
@@ -442,8 +441,8 @@
           {installMessage}
         />
       {/if}
-    {:else}
-      <div class="terms-icon">
+    {:else if showAgreement}
+      <div class="icon">
         <svg
           width="50"
           height="50"
@@ -458,30 +457,193 @@
           />
         </svg>
       </div>
-      <div class="terms-title">Connect Wallet</div>
+      <div class="title">Connect Wallet</div>
+      <div class="subtitle">Participation Agreement</div>
+      <br />
+      <div class="agreement-content">
+        a) BY CLICKING THE ‘OK, LET’S CONNECT’ BUTTON BELOW; YOU WILL DIGITALLY
+        SIGN THE TRACER PERPETUAL POOLS PARTICIPATION AGREEMENT.
+        <br /><br />
+        b) PLEASE READ THIS PARTICIPATION AGREEMENT ("AGREEMENT") CAREFULLY BEFORE
+        CONFIRMING YOUR INTENT TO BE BOUND BY PARTICIPATING IN THE TRACER DAO, TRACER
+        SMART CONTRACTS AND/OR TRACER TOKENS. THIS AGREEMENT INCLUDES THE TERMS OF
+        PARTICIPATION IN THE TRACER DAO. YOU UNDERSTAND, AGREE AND CONFIRM THAT:
+        <br /><br />
+        1. LIMITATION OF LIABILITY
+        <br /><br />
+        YOU ACKNOWLEDGE AND AGREE THAT, TO THE FULLEST EXTENT PERMITTED BY APPLICABLE
+        LAW, REGARDLESS OF THE FORM OF ACTION, WHETHER IN CONTRACT, TORT (INCLUDING
+        NEGLIGENCE) OR OTHERWISE, IN NO EVENT WILL TRACER DAO OR ITS AFFILIATES,
+        INCLUDING WITHOUT LIMITATION, THEIR RESPECTIVE OFFICERS, DIRECTORS, EMPLOYEES,
+        SUCCESSORS AND ASSIGNS, BE LIABLE TO YOU OR ANY OTHER PARTY FOR ANY DIRECT
+        OR INDIRECT LOSS,DAMAGE,COST, EXPENSE OR LIABILITY OF ANY KIND (“LOSS”) ARISING
+        IN ANY WAY OUT OF OR IN CONNECTION WITH THE AVAILABILITY, USE, RELIANCE ON,
+        OR INABILITY TO PARTICIPATE IN THE TRACER DAO WITHOUT LIMITATION; THE TRACER
+        DAO IS AN EXPERIMENT IN THE FIELD OF DECENTRALISED GOVERNANCE STRUCTURES,
+        IN WHICH PARTICIPATION IS ENTIRELY AT YOUR OWN RISK; YOU ALSO AGREE TO WAIVE
+        AND LIMIT ANY POTENTIAL LIABILITY OF TRACER DAO SERVICE PROVIDERS OR OTHER
+        TRACER DAO PARTICIPANTS.
+        <br /><br />
+        2. REPRESENTATIONS AND WARRANTIES
+        <br /><br />
+        YOU ARE SOPHISTICATED AND HAVE SUFFICIENT TECHNICAL UNDERSTANDING OF THE
+        FUNCTIONALITY, USAGE, STORAGE, TRANSMISSION MECHANISMS, AND INTRICACIES ASSOCIATED
+        WITH CRYPTOGRAPHIC TOKENS, TOKEN STORAGE FACILITIES (INCLUDING WALLETS),
+        BLOCKCHAIN TECHNOLOGY, AND BLOCKCHAIN-BASED SOFTWARE SYSTEMS;
+        <br />
+        YOU UNDERSTAND THAT ALL GOVERNANCE TOKENS RELATED TO THE TRACER DAO ONLY
+        ALLOW HOLDERS TO PARTICIPATE IN THE TRACER SYSTEM VIA ITS GOVERNANCE MECHANISM
+        AND PROVIDE NO OWNERSHIP OR ECONOMIC RIGHTS OF ANY KIND;
+        <br />
+        YOU ARE NOT CLAIMING OR RECEIVING ANY GOVERNANCE TOKENS FOR A SPECULATIVE
+        PURPOSE AND NOT ACQUIRING A TRACER DAO TOKEN AS AN INVESTMENT OR WITH THE
+        AIM OF MAKING A PROFIT. YOU FURTHER REPRESENT AND WARRANT THAT YOU ARE AN
+        ACTIVE USER OF BLOCKCHAIN TECHNOLOGY AND BLOCKCHAIN-BASED SOFTWARE SYSTEMS.
+        IF YOU ARE CLAIMING OR HAVE CLAIMED A GOVERNANCE TOKEN YOU ARE OR HAVE DONE
+        SO ONLY TO PARTICIPATE IN THE TRACER DAO EXPERIMENT AND TO PARTICIPATE IN
+        TRACER DAO GOVERNANCE-RELATED DECISIONS;
+        <br /><br />
+        YOU REPRESENT AND WARRANT THAT PARTICIPATING IN THE TRACER DAO UNDER THIS
+        AGREEMENT IS NOT PROHIBITED UNDER THE LAWS OF YOUR JURISDICTION OR UNDER
+        THE LAWS OF ANY OTHER JURISDICTION TO WHICH YOU MAY BE SUBJECT AND YOU ARE
+        AND WILL CONTINUE TO BE IN FULL COMPLIANCE WITH APPLICABLE LAWS (INCLUDING,
+        BUT NOT LIMITED TO, IN COMPLIANCE WITH ANY TAX OR DISCLOSURE OBLIGATIONS
+        TO WHICH YOU MAY BE SUBJECT IN ANY APPLICABLE JURISDICTION);
+        <br /><br />
+        FURTHER YOU REPRESENT AND WARRANT THAT YOU HAVE THE FULL RIGHT, CAPACITY
+        AND POWER TO ENTER INTO AND FULLY PERFORM THIS AGREEMENT IN ACCORDANCE WITH
+        THE TERMS AND THAT YOUR EXECUTION AND PERFORMANCE UNDER THIS AGREEMENT WILL
+        NOT VIOLATE THE PROVISIONS OF ANY OTHER AGREEMENT TO WHICH YOU ARE A PARTY;
+        AND
+        <br /><br />
+        YOU ACKNOWLEDGE AND AGREE THAT YOU PARTICIPATE AT YOUR OWN RISK. PARTICIPATION
+        IN THE TRACER DAO IS PROVIDED AS IS WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES.
+        THE TRACER DAO DOES NOT GUARANTEE THAT PARTICIPATION WILL ALWAYS BE SAFE,
+        SECURE, OR ERROR-FREE OR THAT THE TRACER DAO WILL ALWAYS FUNCTION WITHOUT
+        DISRUPTIONS, DELAYS OR IMPERFECTIONS.
+        <br /><br />
+        3. DISPUTES
+        <br /><br />
+        IF A DISPUTE CANNOT BE RESOLVED AMICABLY WITHIN THE TRACER DAO, ALL CLAIMS
+        ARISING OUT OF OR RELATING TO THIS AGREEMENT OR THE TRACER DAO SHALL BE SETTLED
+        IN BINDING ARBITRATION IN ACCORDANCE WITH THE ARBITRATION CLAUSE CONTAINED
+        HEREIN; BY ENTERING INTO THIS AGREEMENT YOU ARE AGREEING TO WAIVE YOUR RIGHT,
+        IF ANY, TO A TRIAL BY JURY AND PARTICIPATION IN A CLASS ACTION LAWSUIT;
+        <br />
+        THIS AGREEMENT WILL BE DEEMED TO BE DIGITALLY SIGNED IF YOU SUBMIT ANY TRANSACTION
+        TO THE TRACER SYSTEM ON THE ETHEREUM BLOCKCHAIN WHETHER VIA DIRECT INTERACTION
+        WITH ANY SMART CONTRACT WHEREIN THIS AGREEMENT IS STATED, REFERENCED OR BY
+        INTERACTION WITH ANY OTHER VOTE INTERFACE INCORPORATING THIS AGREEMENT. ANY
+        SUCH DIGITAL SIGNATURE SHALL CONSTITUTE CONCLUSIVE EVIDENCE OF YOUR INTENT
+        TO BE BOUND BY THIS AGREEMENT AND YOU WAIVE ANY RIGHT TO CLAIM THAT THE AGREEMENT
+        IS UNENFORCEABLE OR OTHERWISE ARGUE AGAINST ITS ADMISSIBILITY OR AUTHENTICITY
+        IN ANY LEGAL PROCEEDINGS; AND TRACER DAO IS GOVERNED BY THE LAWS OF AUSTRALIA
+        WITHOUT REFERENCE TO ITS CHOICE OF LAW RULES.
+        <br /><br />
+        YOU HAVE READ, FULLY UNDERSTOOD, AND ACCEPT THIS DISCLAIMER AND ALL THE TERMS
+        CONTAINED IN THE PARTICIPATION AGREEMENT.
+        <br /><br />
+        <div class="link">
+          Read the&nbsp;<a
+            href="https://gateway.pinata.cloud/ipfs/QmS161WXV2bEAWUtdecfS5FYPmHQZdhNnjVFAwQ5FTX3og"
+            target="_blank">Participation Agreement</a
+          >
+        </div>
+      </div>
+      <br />
+      <div class="progress">
+        <div
+          class="progress-indicator"
+          on:click={() => (showAgreement = false)}></div>
+        <div class="progress-indicator-selected"></div>
+        <div
+          class="progress-indicator"
+          on:click={() => {
+            if (agreedToAgreement) {
+              showConnection = true
+            }
+          }}></div>
+      </div>
+      <div class="check">
+        <input type="checkbox" bind:checked={agreedToAgreement} />
+        <div
+          class="checkbox-text"
+          on:click={() => (agreedToAgreement = !agreedToAgreement)}
+        >
+          I have read and agree to the Participation Agreement
+        </div>
+      </div>
+      <button
+        class={`${agreedToAgreement ? 'active' : ''}`}
+        on:click={agreedToAgreement ? () => (showConnection = true) : null}
+        >Ok, let's connect</button
+      >
+    {:else}
+      <div class="icon">
+        <svg
+          width="50"
+          height="50"
+          viewBox="0 0 50 50"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect width="50" height="50" rx="25" fill="#D1FAE5" />
+          <path
+            d="M31.25 13.625C31.25 13.194 31.0788 12.7807 30.774 12.476C30.4693 12.1712 30.056 12 29.625 12C29.194 12 28.7807 12.1712 28.476 12.476C28.1712 12.7807 28 13.194 28 13.625V18.5H31.25V13.625ZM33.6875 20.125H15.8125C15.597 20.125 15.3903 20.2106 15.238 20.363C15.0856 20.5153 15 20.722 15 20.9375V22.5625C15 22.778 15.0856 22.9847 15.238 23.137C15.3903 23.2894 15.597 23.375 15.8125 23.375H16.625V25C16.6253 26.8729 17.2723 28.6882 18.4567 30.1391C19.641 31.5899 21.2901 32.5873 23.125 32.9625V38H26.375V32.9625C28.2099 32.5873 29.859 31.5899 31.0433 30.1391C32.2277 28.6882 32.8747 26.8729 32.875 25V23.375H33.6875C33.903 23.375 34.1097 23.2894 34.262 23.137C34.4144 22.9847 34.5 22.778 34.5 22.5625V20.9375C34.5 20.722 34.4144 20.5153 34.262 20.363C34.1097 20.2106 33.903 20.125 33.6875 20.125ZM21.5 13.625C21.5 13.194 21.3288 12.7807 21.024 12.476C20.7193 12.1712 20.306 12 19.875 12C19.444 12 19.0307 12.1712 18.726 12.476C18.4212 12.7807 18.25 13.194 18.25 13.625V18.5H21.5V13.625Z"
+            fill="#0E9A6F"
+          />
+        </svg>
+      </div>
+      <div class="title">Connect Wallet</div>
+      <div class="subtitle">Terms of Use</div>
+      <br />
       <div class="terms-content">
         By connecting your wallet, you accept Tracer’s Terms of Use and
         represent and warrant that you are not a resident of any of the
         following countries:
+        <br /><br />
+        China, the United States, Antigua and Barbuda, Algeria, Bangladesh, Bolivia,
+        Belarus, Burundi, Myanmar (Burma), Cote D’Ivoire (Ivory Coast), Crimea and
+        Sevastopol, Cuba, Democratic Republic of Congo, Ecuador, Iran, Iraq, Liberia,
+        Libya, Magnitsky, Mali, Morocco, Nepal, North Korea, Somalia, Sudan, Syria,
+        Venezuela, Yemen or Zimbabwe.
       </div>
-      <div class="terms-content">
-        China, the United States, Antigua and Barbuda, Algeria, Bangladesh,
-        Bolivia, Belarus, Burundi, Myanmar (Burma), Cote D’Ivoire (Ivory Coast),
-        Crimea and Sevastopol, Cuba, Democratic Republic of Congo, Ecuador,
-        Iran, Iraq, Liberia, Libya, Magnitsky, Mali, Morocco, Nepal, North
-        Korea, Somalia, Sudan, Syria, Venezuela, Yemen or Zimbabwe.
-      </div>
-      <div class="terms-link">
+      <br />
+      <div class="link">
         Read the&nbsp;<a href="/terms-of-use" target="_blank">Terms of Use</a>
       </div>
+      <br />
       <div class="progress">
-        <div class="progress-indicator-selected" />
+        <div class="progress-indicator-selected"></div>
         <div
           class="progress-indicator"
-          on:click={() => (showConnection = true)}
-        />
+          on:click={() => {
+            if (agreedToTerms) {
+              showAgreement = true
+            }
+          }}></div>
+        <div
+          class="progress-indicator"
+          on:click={() => {
+            if (agreedToTerms && agreedToAgreement) {
+              showAgreement = true
+              showConnection = true
+            }
+          }}></div>
       </div>
-      <button on:click={() => (showConnection = true)}>Ok, let's connect</button
+      <div class="check">
+        <input type="checkbox" bind:checked={agreedToTerms} />
+        <div
+          class="checkbox-text"
+          on:click={() => (agreedToTerms = !agreedToTerms)}
+        >
+          I have read and agree to the Terms of Use
+        </div>
+      </div>
+      <button
+        class={`${agreedToTerms ? 'active' : ''}`}
+        on:click={agreedToTerms ? () => (showAgreement = true) : null}
+        >Continue</button
       >
     {/if}
   </Modal>

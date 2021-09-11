@@ -40,10 +40,10 @@
     width: 100%;
     padding: 0;
     height: 63px;
-    transition: 0.1s;
   }
 
   ul li:hover {
+    transition: 0.3s;
     background: #3da8f5;
   }
 
@@ -146,4 +146,4 @@
   <!--  {/each}-->
   <!--{/if}-->
 </ul>
-<div class="border-bottom" />
+<div class="border-bottom"></div>
