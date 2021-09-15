@@ -406,23 +406,6 @@
             <div class="progress-indicator-selected"></div>
           </div>
         {/if}
-        <div class="info-container">
-          <span>
-            Are you new?
-            <Button
-              help={true}
-              primary={true}
-              onclick={() => openLink(modalData?.getHelpLink)}
-            >
-              Get Started
-            </Button>
-          </span>
-          {#if mobileDevice}
-            <Button cta={false} onclick={() => finish({ completed: false })}
-              >Dismiss</Button
-            >
-          {/if}
-        </div>
         {#if showWalletDefinition}
           <p
             in:fade
