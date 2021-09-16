@@ -34,7 +34,7 @@
   export let module: WalletSelectModule = {
     heading: '',
     description: '',
-    wallets: [],
+    wallets: Promise.resolve([]),
     agreement: undefined
   }
 
@@ -46,7 +46,7 @@
   let selectedWalletModule: WalletModule | null
 
   const { mobileDevice, os } = get(app)
-  let { heading, description, explanation, wallets, agreement, getHelpLink } =
+  let { heading, description, explanation, agreement, getHelpLink } =
     module
 
   const { termsUrl, privacyUrl, version } = agreement || {}
@@ -93,7 +93,7 @@
 
   async function renderWalletSelect() {
     const appState = get(app)
-    wallets = await wallets
+    const wallets = await module.wallets
 
     const deviceWallets = (wallets as WalletModule[])
       .filter(wallet => wallet[mobileDevice ? 'mobile' : 'desktop'])
