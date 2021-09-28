@@ -327,9 +327,9 @@
   }
 
   .loading {
-    margin: 30px auto 20px;
-    width: 177px;
-    height: 92px;
+    margin: 10px auto 50px;
+    width: 120px;
+    height: 60px;
   }
 </style>
 
@@ -342,49 +342,7 @@
 {#if activeModal}
   <Modal closeModal={() => handleExit()}>
     <div class="loading">
-      <svg
-        id="eaGBD5e1KEP1"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="688 0 620 267.400000"
-        shape-rendering="geometricPrecision"
-        text-rendering="geometricPrecision"
-      >
-        <style>
-          <![CDATA[#eaGBD5e1KEP4_to {animation: eaGBD5e1KEP4_to__to 1000ms linear infinite normal forwards}@keyframes eaGBD5e1KEP4_to__to { 0% {transform: translate(577.321785px,-59.500000px)} 50% {transform: translate(638.185892px,-59.500000px)} 100% {transform: translate(579.050000px,-59.500000px)}} #eaGBD5e1KEP6_to {animation: eaGBD5e1KEP6_to__to 1000ms linear infinite normal forwards}@keyframes eaGBD5e1KEP6_to__to { 0% {transform: translate(579.050000px,-59.500000px)} 50% {transform: translate(519.050000px,-59.500000px)} 100% {transform: translate(579.050000px,-59.500000px)}}]]>
-        </style>
-        <g id="eaGBD5e1KEP2">
-          <g id="eaGBD5e1KEP3" />
-          <g id="eaGBD5e1KEP4_to" transform="translate(577.321785,-59.500000)">
-            <polygon
-              id="eaGBD5e1KEP4"
-              points="667.700000,59.500000 436.100000,193.200000 667.700000,326.900000 667.700000,291.900000 496.900000,193.300000 667.700000,94.700000"
-              transform="translate(0,0)"
-              stroke="none"
-              stroke-width="1"
-            />
-          </g>
-          <rect
-            id="eaGBD5e1KEP5"
-            width="30.400000"
-            height="267.400000"
-            rx="0"
-            ry="0"
-            transform="matrix(1 0 0 1 984.75000000000000 0.00000000000003)"
-            stroke="none"
-            stroke-width="1"
-          />
-          <g id="eaGBD5e1KEP6_to" transform="translate(579.050000,-59.500000)">
-            <polygon
-              id="eaGBD5e1KEP6"
-              points="174.200000,94.700000 344.900000,193.300000 174.200000,291.900000 174.200000,326.900000 405.700000,193.200000 174.200000,59.500000"
-              transform="translate(0,0)"
-              stroke="none"
-              stroke-width="1"
-            />
-          </g>
-        </g>
-      </svg>
+      <svg id="etmVbc8LISU1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 123 57" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"><style><![CDATA[#etmVbc8LISU2_to {animation: etmVbc8LISU2_to__to 1600ms linear infinite normal forwards}@keyframes etmVbc8LISU2_to__to { 0% {transform: translate(12.5px,44.5px)} 25% {transform: translate(12.5px,16.5px)} 50% {transform: translate(12.5px,44.5px)} 100% {transform: translate(12.5px,44.5px)}} #etmVbc8LISU3_to {animation: etmVbc8LISU3_to__to 1600ms linear infinite normal forwards}@keyframes etmVbc8LISU3_to__to { 0% {transform: translate(61.5px,44.5px)} 25% {transform: translate(61.5px,44.5px)} 50% {transform: translate(61.5px,16.5px)} 75% {transform: translate(61.5px,44.5px)} 100% {transform: translate(61.5px,44.5px)}} #etmVbc8LISU4_to {animation: etmVbc8LISU4_to__to 1600ms linear infinite normal forwards}@keyframes etmVbc8LISU4_to__to { 0% {transform: translate(110.5px,44.5px)} 50% {transform: translate(110.5px,44.5px)} 75% {transform: translate(110.5px,16.5px)} 100% {transform: translate(110.5px,44.5px)}}]]></style><g id="etmVbc8LISU2_to" transform="translate(12.5,44.5)"><circle id="etmVbc8LISU2" r="12.5" transform="translate(0,0)" fill="rgb(13,43,211)" stroke="none" stroke-width="1"/></g><g id="etmVbc8LISU3_to" transform="translate(61.5,44.5)"><circle id="etmVbc8LISU3" r="12.5" transform="translate(0,0)" fill="rgb(13,43,211)" stroke="none" stroke-width="1"/></g><g id="etmVbc8LISU4_to" transform="translate(110.5,44.5)"><circle id="etmVbc8LISU4" r="12.5" transform="translate(0,0)" fill="rgb(13,43,211)" stroke="none" stroke-width="1"/></g></svg>
     </div>
     <div>{activeModal.description}</div>
 
