@@ -304,6 +304,16 @@
       color: white;
   }
 
+  @media (max-width: 640px) {
+    .terms-content {
+      height: 100px;
+      overflow-y: scroll;
+    }
+    .agreement-content {
+      height: 100px;
+    }
+  }
+
   ::-webkit-scrollbar {
     display: none;
   }
