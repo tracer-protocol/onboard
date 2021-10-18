@@ -314,10 +314,6 @@
     }
   }
 
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
   .link {
     display: flex;
     justify-content: center;
