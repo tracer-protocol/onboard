@@ -46,8 +46,7 @@
   let selectedWalletModule: WalletModule | null
 
   const { mobileDevice, os } = get(app)
-  let { heading, description, explanation, agreement, getHelpLink } =
-    module
+  let { heading, description, explanation, agreement } = module
 
   const { termsUrl, privacyUrl, version } = agreement || {}
   const {
