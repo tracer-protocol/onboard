@@ -331,6 +331,12 @@
     width: 120px;
     height: 60px;
   }
+  .loading > svg {
+    color: #0d29ff;
+  }
+  .loading-dark > svg {
+    color: white;
+  }
 </style>
 
 {#if loadingModal}
@@ -341,15 +347,92 @@
 
 {#if activeModal}
   <Modal closeModal={() => handleExit()}>
-    {#if $app.darkMode === true}
-      <div class="loading">
-        <svg id="etmVbc8LISU1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 123 57" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"><style><![CDATA[#etmVbc8LISU2_to {animation: etmVbc8LISU2_to__to 1600ms linear infinite normal forwards}@keyframes etmVbc8LISU2_to__to { 0% {transform: translate(12.5px,44.5px)} 25% {transform: translate(12.5px,16.5px)} 50% {transform: translate(12.5px,44.5px)} 100% {transform: translate(12.5px,44.5px)}} #etmVbc8LISU3_to {animation: etmVbc8LISU3_to__to 1600ms linear infinite normal forwards}@keyframes etmVbc8LISU3_to__to { 0% {transform: translate(61.5px,44.5px)} 25% {transform: translate(61.5px,44.5px)} 50% {transform: translate(61.5px,16.5px)} 75% {transform: translate(61.5px,44.5px)} 100% {transform: translate(61.5px,44.5px)}} #etmVbc8LISU4_to {animation: etmVbc8LISU4_to__to 1600ms linear infinite normal forwards}@keyframes etmVbc8LISU4_to__to { 0% {transform: translate(110.5px,44.5px)} 50% {transform: translate(110.5px,44.5px)} 75% {transform: translate(110.5px,16.5px)} 100% {transform: translate(110.5px,44.5px)}}]]></style><g id="etmVbc8LISU2_to" transform="translate(12.5,44.5)"><circle id="etmVbc8LISU2" r="12.5" transform="translate(0,0)" fill="rgb(255,255,255)" stroke="none" stroke-width="1"/></g><g id="etmVbc8LISU3_to" transform="translate(61.5,44.5)"><circle id="etmVbc8LISU3" r="12.5" transform="translate(0,0)" fill="rgb(255,255,255)" stroke="none" stroke-width="1"/></g><g id="etmVbc8LISU4_to" transform="translate(110.5,44.5)"><circle id="etmVbc8LISU4" r="12.5" transform="translate(0,0)" fill="rgb(255,255,255)" stroke="none" stroke-width="1"/></g></svg>
-      </div>
-    {:else}
-      <div class="loading">
-        <svg id="etmVbc8LISU1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 123 57" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"><style><![CDATA[#etmVbc8LISU2_to {animation: etmVbc8LISU2_to__to 1600ms linear infinite normal forwards}@keyframes etmVbc8LISU2_to__to { 0% {transform: translate(12.5px,44.5px)} 25% {transform: translate(12.5px,16.5px)} 50% {transform: translate(12.5px,44.5px)} 100% {transform: translate(12.5px,44.5px)}} #etmVbc8LISU3_to {animation: etmVbc8LISU3_to__to 1600ms linear infinite normal forwards}@keyframes etmVbc8LISU3_to__to { 0% {transform: translate(61.5px,44.5px)} 25% {transform: translate(61.5px,44.5px)} 50% {transform: translate(61.5px,16.5px)} 75% {transform: translate(61.5px,44.5px)} 100% {transform: translate(61.5px,44.5px)}} #etmVbc8LISU4_to {animation: etmVbc8LISU4_to__to 1600ms linear infinite normal forwards}@keyframes etmVbc8LISU4_to__to { 0% {transform: translate(110.5px,44.5px)} 50% {transform: translate(110.5px,44.5px)} 75% {transform: translate(110.5px,16.5px)} 100% {transform: translate(110.5px,44.5px)}}]]></style><g id="etmVbc8LISU2_to" transform="translate(12.5,44.5)"><circle id="etmVbc8LISU2" r="12.5" transform="translate(0,0)" fill="rgb(13,43,211)" stroke="none" stroke-width="1"/></g><g id="etmVbc8LISU3_to" transform="translate(61.5,44.5)"><circle id="etmVbc8LISU3" r="12.5" transform="translate(0,0)" fill="rgb(13,43,211)" stroke="none" stroke-width="1"/></g><g id="etmVbc8LISU4_to" transform="translate(110.5,44.5)"><circle id="etmVbc8LISU4" r="12.5" transform="translate(0,0)" fill="rgb(13,43,211)" stroke="none" stroke-width="1"/></g></svg>
-      </div>
-    {/if}
+    <div class="loading" class:loading-dark={$app.darkMode}>
+      <svg id="etmVbc8LISU1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 123 57" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+        <style>
+          <![CDATA[
+          #etmVbc8LISU2_to {
+            animation: etmVbc8LISU2_to__to 1600ms linear infinite normal forwards
+          }
+
+          @keyframes etmVbc8LISU2_to__to {
+            0% {
+              transform: translate(12.5px, 44.5px)
+            }
+
+            25% {
+              transform: translate(12.5px, 16.5px)
+            }
+
+            50% {
+              transform: translate(12.5px, 44.5px)
+            }
+
+            100% {
+              transform: translate(12.5px, 44.5px)
+            }
+          }
+
+          #etmVbc8LISU3_to {
+            animation: etmVbc8LISU3_to__to 1600ms linear infinite normal forwards
+          }
+
+          @keyframes etmVbc8LISU3_to__to {
+            0% {
+              transform: translate(61.5px, 44.5px)
+            }
+
+            25% {
+              transform: translate(61.5px, 44.5px)
+            }
+
+            50% {
+              transform: translate(61.5px, 16.5px)
+            }
+
+            75% {
+              transform: translate(61.5px, 44.5px)
+            }
+
+            100% {
+              transform: translate(61.5px, 44.5px)
+            }
+          }
+
+          #etmVbc8LISU4_to {
+            animation: etmVbc8LISU4_to__to 1600ms linear infinite normal forwards
+          }
+
+          @keyframes etmVbc8LISU4_to__to {
+            0% {
+              transform: translate(110.5px, 44.5px)
+            }
+
+            50% {
+              transform: translate(110.5px, 44.5px)
+            }
+
+            75% {
+              transform: translate(110.5px, 16.5px)
+            }
+
+            100% {
+              transform: translate(110.5px, 44.5px)
+            }
+          }
+          ]]>
+        </style>
+        <g id="etmVbc8LISU2_to" transform="translate(12.5,44.5)">
+          <circle id="etmVbc8LISU2" r="12.5" transform="translate(0,0)" fill="currentColor" stroke="none" stroke-width="1" />
+        </g>
+        <g id="etmVbc8LISU3_to" transform="translate(61.5,44.5)">
+          <circle id="etmVbc8LISU3" r="12.5" transform="translate(0,0)" fill="currentColor" stroke="none" stroke-width="1" />
+        </g>
+        <g id="etmVbc8LISU4_to" transform="translate(110.5,44.5)">
+          <circle id="etmVbc8LISU4" r="12.5" transform="translate(0,0)" fill="currentColor" stroke="none" stroke-width="1" />
+        </g>
+      </svg>
+    </div>
     <div>{activeModal.description}</div>
 
     <!--    <ModalHeader icon={activeModal.icon || ''} heading={activeModal.heading} />-->
