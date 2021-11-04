@@ -266,12 +266,6 @@
     font-family: inherit;
   }
 
-  .info-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 20px 0;
-  }
-
   .icon {
     margin: 30px auto 20px;
     width: 50px;
@@ -295,6 +289,9 @@
     text-align: center;
     color: gray;
   }
+  .terms-content-dark {
+      color: white;
+  }
 
   .agreement-content {
     text-align: center;
@@ -302,11 +299,27 @@
     height: 300px;
     overflow-y: scroll;
   }
+  .agreement-content-dark {
+      color: white;
+  }
+
+  @media (max-width: 640px) {
+    .terms-content {
+      height: 100px;
+      overflow-y: scroll;
+    }
+    .agreement-content {
+      height: 100px;
+    }
+  }
 
   .link {
     display: flex;
     justify-content: center;
     color: gray;
+  }
+  .link-dark {
+    color: white;
   }
   .link a {
     color: #3da8f5;
@@ -321,20 +334,18 @@
     align-items: center;
     color: #ffffff;
     background-color: #0210be;
-    border: 1px solid #0210be;
     padding: 20px 0;
     border-radius: 10px;
     cursor: not-allowed;
     opacity: 0.5;
   }
+  .button-dark {
+    background-color: #3535DC;
+  }
   button.active {
     transition: 0.5s;
     opacity: 1;
     cursor: pointer;
-  }
-  button.active:hover {
-    color: #0210be;
-    background-color: #ffffff;
   }
 
   .progress {
@@ -353,6 +364,9 @@
     background-color: #002886;
     cursor: pointer;
   }
+  .progress-indicator-dark {
+      background-color: white;
+  }
 
   .progress-indicator-selected {
     width: 15px;
@@ -360,6 +374,10 @@
     border-radius: 50%;
     background-color: #002886;
     border: 3px solid #3da8f5;
+  }
+  .progress-indicator-selected-dark {
+      background-color: #3535DC;
+      border: 3px solid #A6A6F2;
   }
 
   .check {
@@ -374,6 +392,13 @@
   .checkbox-text {
     margin-left: 5px;
     color: gray;
+  }
+  .checkbox-text-dark {
+    color: white;
+  }
+
+  .input-dark {
+    accent-color: #6875F5;
   }
 </style>
 
@@ -395,33 +420,18 @@
           <div class="progress">
             <div
               class="progress-indicator"
+              class:progress-indicator-dark={$app.darkMode}
               on:click={() => {
                 showConnection = false
                 showAgreement = false
               }}></div>
             <div
               class="progress-indicator"
+              class:progress-indicator-dark={$app.darkMode}
               on:click={() => (showConnection = false)}></div>
-            <div class="progress-indicator-selected"></div>
+            <div class="progress-indicator-selected" class:progress-indicator-selected-dark={$app.darkMode}></div>
           </div>
         {/if}
-        <div class="info-container">
-          <span>
-            Are you new?
-            <Button
-              help={true}
-              primary={true}
-              onclick={() => openLink(modalData?.getHelpLink)}
-            >
-              Get Started
-            </Button>
-          </span>
-          {#if mobileDevice}
-            <Button cta={false} onclick={() => finish({ completed: false })}
-              >Dismiss</Button
-            >
-          {/if}
-        </div>
         {#if showWalletDefinition}
           <p
             in:fade
@@ -459,7 +469,7 @@
       <div class="title">Connect Wallet</div>
       <div class="subtitle">Participation Agreement</div>
       <br />
-      <div class="agreement-content">
+      <div class="agreement-content" class:agreement-content-dark={$app.darkMode}>
         a) BY CLICKING THE ‘OK, LET’S CONNECT’ BUTTON BELOW; YOU WILL DIGITALLY
         SIGN THE TRACER DAO PARTICIPATION AGREEMENT.
         <br /><br />
@@ -542,7 +552,7 @@
         YOU HAVE READ, FULLY UNDERSTOOD, AND ACCEPT THIS DISCLAIMER AND ALL THE TERMS
         CONTAINED IN THE PARTICIPATION AGREEMENT.
         <br /><br />
-        <div class="link">
+        <div class="link" class:link-dark={$app.darkMode}>
           Read the&nbsp;<a
             href="https://gateway.pinata.cloud/ipfs/QmS161WXV2bEAWUtdecfS5FYPmHQZdhNnjVFAwQ5FTX3og"
             target="_blank">Participation Agreement</a
@@ -553,10 +563,12 @@
       <div class="progress">
         <div
           class="progress-indicator"
+          class:progress-indicator-dark={$app.darkMode}
           on:click={() => (showAgreement = false)}></div>
-        <div class="progress-indicator-selected"></div>
+        <div class="progress-indicator-selected" class:progress-indicator-selected-dark={$app.darkMode}></div>
         <div
           class="progress-indicator"
+          class:progress-indicator-dark={$app.darkMode}
           on:click={() => {
             if (agreedToAgreement) {
               showConnection = true
@@ -564,9 +576,10 @@
           }}></div>
       </div>
       <div class="check">
-        <input type="checkbox" bind:checked={agreedToAgreement} />
+        <input type="checkbox" bind:checked={agreedToAgreement} class:input-dark={$app.darkMode} />
         <div
           class="checkbox-text"
+          class:checkbox-text-dark={$app.darkMode}
           on:click={() => (agreedToAgreement = !agreedToAgreement)}
         >
           I have read and agree to the Participation Agreement
@@ -574,6 +587,7 @@
       </div>
       <button
         class={`${agreedToAgreement ? 'active' : ''}`}
+        class:button-dark={$app.darkMode}
         on:click={agreedToAgreement ? () => (showConnection = true) : null}
         >Ok, let's connect</button
       >
@@ -596,7 +610,7 @@
       <div class="title">Connect Wallet</div>
       <div class="subtitle">Terms of Use</div>
       <br />
-      <div class="terms-content">
+      <div class="terms-content" class:terms-content-dark={$app.darkMode}>
         By connecting your wallet, you accept Tracer’s Terms of Use and
         represent and warrant that you are not a resident of any of the
         following countries:
@@ -608,14 +622,15 @@
         Venezuela, Yemen or Zimbabwe.
       </div>
       <br />
-      <div class="link">
+      <div class="link" class:link-dark={$app.darkMode}>
         Read the&nbsp;<a href="/terms-of-use" target="_blank">Terms of Use</a>
       </div>
       <br />
       <div class="progress">
-        <div class="progress-indicator-selected"></div>
+        <div class="progress-indicator-selected" class:progress-indicator-selected-dark={$app.darkMode}></div>
         <div
           class="progress-indicator"
+          class:progress-indicator-dark={$app.darkMode}
           on:click={() => {
             if (agreedToTerms) {
               showAgreement = true
@@ -623,6 +638,7 @@
           }}></div>
         <div
           class="progress-indicator"
+          class:progress-indicator-dark={$app.darkMode}
           on:click={() => {
             if (agreedToTerms && agreedToAgreement) {
               showAgreement = true
@@ -631,9 +647,10 @@
           }}></div>
       </div>
       <div class="check">
-        <input type="checkbox" bind:checked={agreedToTerms} />
+        <input type="checkbox" bind:checked={agreedToTerms} class:input-dark={$app.darkMode} />
         <div
           class="checkbox-text"
+          class:checkbox-text-dark={$app.darkMode}
           on:click={() => (agreedToTerms = !agreedToTerms)}
         >
           I have read and agree to the Terms of Use
@@ -641,6 +658,7 @@
       </div>
       <button
         class={`${agreedToTerms ? 'active' : ''}`}
+        class:button-dark={$app.darkMode}
         on:click={agreedToTerms ? () => (showAgreement = true) : null}
         >Continue</button
       >

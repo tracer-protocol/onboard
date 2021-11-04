@@ -23,12 +23,6 @@
     background: rgba(0, 0, 0, 0.3);
   }
 
-  @media screen and (max-width: 420px) {
-    aside {
-      font-size: 14px;
-    }
-  }
-
   /* .bn-onboard-modal-content  */
   section {
     display: block;
@@ -42,6 +36,16 @@
     overflow: hidden;
     width: 422px;
     padding: 20px;
+  }
+
+  @media screen and (max-width: 680px) {
+    aside {
+      font-size: 14px;
+    }
+
+    section {
+      width: 300px;
+    }
   }
 
   svg {

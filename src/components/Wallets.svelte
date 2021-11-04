@@ -2,7 +2,7 @@
   import { onDestroy } from 'svelte'
   // import Button from '../elements/Button.svelte'
   import IconButton from '../elements/IconButton.svelte'
-  import { wallet } from '../stores'
+  import { app, wallet } from '../stores'
   import {
     WalletSelectModalData,
     WalletModule,
@@ -42,9 +42,12 @@
     height: 63px;
   }
 
-  ul li:hover {
+  .list:hover {
     transition: 0.3s;
-    background: #3da8f5;
+    background-color: #3da8f5;
+  }
+  .list-dark:hover {
+    background-color: #6875F5;
   }
 
   ::-webkit-scrollbar {
@@ -65,6 +68,9 @@
   .border-bottom {
     width: 100%;
     border-bottom: 1px solid #e6e6e6;
+  }
+  .border-bottom-dark {
+    border-bottom: 1px solid #374151;
   }
 </style>
 
@@ -109,7 +115,7 @@
   <!--{/if}-->
 
   {#each modalData.primaryWallets as wallet, i (wallet.name)}
-    <li>
+    <li class="list" class:list-dark={$app.darkMode}>
       <IconButton
         disabled={walletsDisabled}
         onclick={() => handleWalletSelect(wallet)}
@@ -146,4 +152,4 @@
   <!--  {/each}-->
   <!--{/if}-->
 </ul>
-<div class="border-bottom"></div>
+<div class="border-bottom" class:border-bottom-dark={$app.darkMode}></div>

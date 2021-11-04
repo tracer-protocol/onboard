@@ -1,5 +1,6 @@
 <script lang="ts">
   export let heading: string
+  import { app } from "../stores";
 </script>
 
 <style>
@@ -16,6 +17,9 @@
     font-size: 1.2em;
     padding-bottom: 20px;
     border-bottom: 1px solid #e6e6e6;
+  }
+  .wallet-heading-dark {
+    border-bottom: 1px solid #374151;
   }
 </style>
 
@@ -37,6 +41,7 @@
   </div>
   <div
     class="wallet-heading bn-onboard-custom bn-onboard-modal-content-header-heading"
+    class:wallet-heading-dark={$app.darkMode}
   >
     {heading}
   </div>
