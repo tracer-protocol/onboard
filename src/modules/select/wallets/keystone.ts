@@ -1,31 +1,49 @@
-import { LatticeOptions, WalletModule, Helpers } from '../../../interfaces'
-import latticeIcon from '../wallet-icons/icon-lattice'
+import AirGapedKeyring from '@keystonehq/eth-keyring'
+import {
+  Helpers,
+  KeystoneOptions,
+  WalletModule,
+  HardwareWalletCustomNetwork
+} from '../../../interfaces'
+import keystoneIcon from '../wallet-icons/icon-keystone.png'
+import keystoneIcon2x from '../wallet-icons/icon-keystone@2x.png'
 
-function lattice(
-  options: LatticeOptions & { networkId: number }
+function keystone(
+  options: KeystoneOptions & { networkId: number }
 ): WalletModule {
-  const { appName, rpcUrl, networkId, preferred, label, iconSrc, svg } = options
+  const {
+    appName,
+    rpcUrl,
+    networkId,
+    preferred,
+    label,
+    iconSrc,
+    svg,
+    customNetwork
+  } = options
 
   return {
-    name: label || 'Lattice',
-    svg: svg || latticeIcon,
-    iconSrc,
+    name: label || 'Keystone',
+    svg: svg,
+    iconSrc: keystoneIcon,
+    iconSrcSet: iconSrc || keystoneIcon2x,
     wallet: async (helpers: Helpers) => {
       const { BigNumber, networkName, resetWalletState } = helpers
 
-      const provider = await latticeProvider({
+      const provider = await keystoneProvider({
         appName,
         rpcUrl,
         networkId,
         BigNumber,
         networkName,
-        resetWalletState
+        resetWalletState,
+        customNetwork
       })
 
       return {
         provider,
         interface: {
-          name: 'Lattice',
+          name: 'Keystone',
           connect: provider.enable,
           disconnect: provider.disconnect,
           address: {
@@ -46,39 +64,36 @@ function lattice(
     type: 'hardware',
     desktop: true,
     mobile: true,
-    osExclusions: ['iOS'],
+    osExclusions: [],
     preferred
   }
 }
 
-async function latticeProvider(options: {
+async function keystoneProvider(options: {
   appName: string
   networkId: number
   rpcUrl: string
   BigNumber: any
+  customNetwork?: HardwareWalletCustomNetwork
   networkName: (id: number) => string
   resetWalletState: (options?: {
     disconnected: boolean
     walletName: string
   }) => void
 }) {
-  const { default: EthLatticeKeyring } = await import('eth-lattice-keyring')
-  const EthereumTx = await import('ethereumjs-tx')
+  const { Transaction } = await import('@ethereumjs/tx')
+  const { default: Common } = await import('@ethereumjs/common')
   const { default: createProvider } = await import('./providerEngine')
 
   const BASE_PATH = "m/44'/60'/0'/0"
 
-  const { networkId, appName, rpcUrl, BigNumber, networkName } = options
+  const { networkId, rpcUrl, BigNumber, networkName, customNetwork } = options
 
-  const params = {
-    name: appName,
-    network: networkName(networkId)
-  }
-  const Lattice = new EthLatticeKeyring(params)
+  const keyring = AirGapedKeyring.getEmptyKeyring()
 
   let dPath = ''
 
-  let addressList = Array.from([])
+  let addressToIndex = new Map<string, number>()
   let enabled = false
   let customPath = false
 
@@ -113,6 +128,11 @@ async function latticeProvider(options: {
         .then((res: string) => callback(null, res))
         .catch(err => callback(err, null))
     },
+    signTypedMessage: (messageData: any, callback: any) => {
+      signTypedMessage(messageData)
+        .then((res: string) => callback(null, res))
+        .catch(err => callback(err, null))
+    },
     rpcUrl
   })
 
@@ -132,12 +152,13 @@ async function latticeProvider(options: {
   function disconnect() {
     dPath = ''
     enabled = false
+    addressToIndex = new Map<string, number>()
     provider.stop()
   }
 
   async function setPath(path: string) {
     if (path !== BASE_PATH)
-      throw new Error("Lattice only supports standard path: m/44'/0'/0'/0/x")
+      throw new Error("Keystone only supports standard path: m/44'/0'/0'/0/x")
     customPath = false
     dPath = path
     return true
@@ -148,25 +169,48 @@ async function latticeProvider(options: {
   }
 
   function enable() {
-    enabled = true
-    return getAccounts()
+    if (enabled) {
+      return getAccounts()
+    }
+    return keyring.readKeyring().then(() => {
+      enabled = true
+      return getAccounts()
+    })
   }
 
   function addresses() {
-    return addressList
+    return Array.from(addressToIndex.keys())
   }
 
-  function setPrimaryAccount() {
-    return
+  function generateAccountsMap(accounts: string[]) {
+    const _map = new Map<string, number>()
+    accounts.forEach((account, index) => {
+      _map.set(account, index)
+    })
+    return _map
+  }
+
+  function setPrimaryAccount(address: string) {
+    // make a copy and put in an array
+    const accounts = [...addressToIndex.entries()]
+    const account = accounts.find(
+      ([accountAddress]) => accountAddress === address
+    )!
+    const accountIndex = accounts.findIndex(
+      ([accountAddress]) => accountAddress === address
+    )
+    keyring.setCurrentAccount(account?.[1] || 0)
+    // pull the item at the account index out of the array and place at the front
+    accounts.unshift(accounts.splice(accountIndex, 1)[0])
+    // reassign addressToPath to new ordered accounts
+    addressToIndex = new Map(accounts)
   }
 
   function getPrimaryAddress() {
-    return enabled ? addresses()[0] : undefined
+    return keyring.getCurrentAddress()
   }
 
   async function getMoreAccounts() {
-    const m = `Lattice only supports one exported account per wallet. Checking for new wallet.`
-    console.warn(m)
     const accounts = await getAccounts(true)
     return accounts && getBalances(accounts)
   }
@@ -176,17 +220,19 @@ async function latticeProvider(options: {
       return []
     }
 
-    if (addressList.length > 0 && !getMore) {
-      return addressList
+    if (addressToIndex.size > 0 && !getMore) {
+      return addresses()
     }
 
     try {
-      addressList = await Lattice.addAccounts()
+      const accounts = await keyring.addAccounts(5)
+      addressToIndex = generateAccountsMap(accounts)
+      const currentPrimary = getPrimaryAddress()
+      setPrimaryAccount(currentPrimary)
     } catch (error) {
       throw error
     }
-
-    return addressList
+    return addresses()
   }
 
   function getBalances(addresses: Array<string>) {
@@ -225,17 +271,25 @@ async function latticeProvider(options: {
   }
 
   async function signTransaction(transactionData: any) {
-    if (addressList.length === 0) {
+    if (addressToIndex.size === 0) {
       await enable()
     }
 
-    const transaction = new EthereumTx.Transaction(transactionData, {
-      chain: networkName(networkId)
+    const common = new Common({
+      chain: customNetwork || networkName(networkId)
     })
 
+    const transaction = Transaction.fromTxData(
+      {
+        ...transactionData,
+        gasLimit: transactionData.gas ?? transactionData.gasLimit
+      },
+      { common, freeze: false }
+    )
+
     try {
-      const signedTx = await Lattice.signTransaction(
-        addressList[0],
+      const signedTx = await keyring.signTransaction(
+        getPrimaryAddress(),
         transaction
       )
       return `0x${signedTx.serialize().toString('hex')}`
@@ -245,16 +299,30 @@ async function latticeProvider(options: {
   }
 
   async function signMessage(message: { data: string }): Promise<string> {
-    if (addressList.length === 0) {
+    if (addressToIndex.size === 0) {
       await enable()
     }
 
     try {
-      const sig = await Lattice.signPersonalMessage(
-        addressList[0],
-        message.data
-      )
-      return sig
+      return keyring.signPersonalMessage(getPrimaryAddress(), message.data)
+    } catch (err) {
+      throw err
+    }
+  }
+
+  async function signTypedMessage({ data }: { data: any }) {
+    if (addressToIndex.size === 0) {
+      await enable()
+    }
+
+    try {
+      if (typeof data === 'string') {
+        return keyring.signTypedData(getPrimaryAddress(), JSON.parse(data))
+      }
+      if (typeof data === 'object') {
+        return keyring.signTypedData(getPrimaryAddress(), data)
+      }
+      throw new Error('invalid typed data')
     } catch (err) {
       throw err
     }
@@ -263,4 +331,4 @@ async function latticeProvider(options: {
   return provider
 }
 
-export default lattice
+export default keystone

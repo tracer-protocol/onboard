@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { get } from 'svelte/store'
 
 import { app } from './stores'
-import { WalletInterface } from './interfaces'
+import { WalletInterface, Ens } from './interfaces'
 
 export function getNetwork(provider: any): Promise<number | any> {
   return new Promise((resolve, reject) => {
@@ -67,6 +67,32 @@ export function getAddress(provider: any): Promise<string | any> {
   })
 }
 
+export async function getEns(provider: any, address: string): Promise<Ens> {
+  const { networkId } = get(app)
+  try {
+    // There is an issue with ens and ts unable to find the
+    // declaration file for it even though it is present.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore - TS7016
+    const { default: ENS, getEnsAddress } = await import('@ensdomains/ensjs')
+    const ens = new ENS({ provider, ensAddress: getEnsAddress(networkId) })
+    const { name } = await ens.getName(address)
+    const nameInterface = await ens.name(name)
+    const contentHash = await nameInterface?.getContent()
+    const avatar = await nameInterface?.getText('avatar')
+    return {
+      name,
+      avatar,
+      contentHash,
+      getText: nameInterface?.getText.bind(nameInterface)
+    }
+  } catch (e) {
+    // Error getting ens
+    console.error(e)
+    return {}
+  }
+}
+
 export function getBalance(
   provider: any,
   address?: string
@@ -115,14 +141,33 @@ export function createModernProviderInterface(provider: any): WalletInterface {
 
   const onFuncExists = typeof provider.on === 'function'
 
+  interface ProviderEventHandlers {
+    accountsChanged: ((arg: string[]) => void) | null
+    networkChanged: ((arg: string | number) => void) | null
+    chainChanged: ((arg: string | number) => void) | null
+  }
+
+  // A map of provider event handlers -- refferences needed
+  // in order to remove the event listners when their no longer needed
+  const providerEventHandler: ProviderEventHandlers = {
+    accountsChanged: null,
+    networkChanged: null,
+    chainChanged: null
+  }
+
   return {
     address: onFuncExists
       ? {
           onChange: func => {
+            providerEventHandler['accountsChanged'] = (accounts: string[]) => {
+              func(accounts && accounts[0])
+            }
+
             // get the initial value
             getAddress(provider).then(func)
-            provider.on('accountsChanged', (accounts: string[]) =>
-              func(accounts && accounts[0])
+            provider.on(
+              'accountsChanged',
+              providerEventHandler['accountsChanged']
             )
           }
         }
@@ -132,18 +177,26 @@ export function createModernProviderInterface(provider: any): WalletInterface {
     network: onFuncExists
       ? {
           onChange: (func: (val: string | number) => void) => {
+            providerEventHandler['networkChanged'] = (netId: string | number) =>
+              func(netId && Number(netId))
+
+            // We clone the previous handler in order to get a distinct refference
+            // to the 'chainChanged' event handler
+            providerEventHandler['chainChanged'] = providerEventHandler[
+              'networkChanged'
+            ].bind({})
+
             // get initial value
             getNetwork(provider).then(func)
 
             // networkChanged event is deprecated in MM, keep for wallets that may not have updated
-            provider.on('networkChanged', (netId: string | number) =>
-              func(netId && Number(netId))
+            provider.on(
+              'networkChanged',
+              providerEventHandler['networkChanged']
             )
 
             // use new chainChanged event for network change
-            provider.on('chainChanged', (netId: string | number) =>
-              func(netId && Number(netId))
-            )
+            provider.on('chainChanged', providerEventHandler['chainChanged'])
           }
         }
       : { get: () => getNetwork(provider) },
@@ -164,6 +217,17 @@ export function createModernProviderInterface(provider: any): WalletInterface {
       } catch (e) {
         throw {
           message: 'This dapp requires access to your account information.'
+        }
+      }
+    },
+    disconnect: () => {
+      if (provider?.removeListener) {
+        // Iterate over the event handlers and remove them from the event listener.
+        for (const [key, handler] of Object.entries(providerEventHandler)) {
+          // If the handler is null, this indicates that no event listener was created
+          if (handler) {
+            provider.removeListener(key, handler)
+          }
         }
       }
     },
@@ -233,14 +297,6 @@ export function getProviderName(provider: any): string | undefined {
     return 'Coinbase'
   }
 
-  if (provider.isToshi) {
-    return 'Toshi'
-  }
-
-  if (provider.isCipher) {
-    return 'Cipher'
-  }
-
   if (provider.isOpera) {
     return 'Opera'
   }
@@ -285,6 +341,10 @@ export function getProviderName(provider: any): string | undefined {
     return 'Bitpie'
   }
 
+  if (provider.isTp) {
+    return 'tp'
+  }
+
   // =====================================
   // When adding new wallet place above this metamask check as some providers
   // have an isMetaMask property in addition to the wallet's own `is[WalletName]`
@@ -312,46 +372,23 @@ export function getDeviceInfo() {
 }
 
 export function networkName(id: number): string {
-  switch (id) {
-    case 1:
-      return 'mainnet'
-    case 3:
-      return 'ropsten'
-    case 4:
-      return 'rinkeby'
-    case 5:
-      return 'goerli'
-    case 42:
-      return 'kovan'
-    case 100:
-      return 'xdai'
-    case 56:
-      return 'bsc'
-    default:
-      const { networkId, networkName } = get(app)
-      return (networkId === id && networkName) || 'unknown'
-  }
-}
-
-export function networkToId(network: string): number {
-  switch (network) {
-    case 'mainnet':
-      return 1
-    case 'ropsten':
-      return 3
-    case 'rinkeby':
-      return 4
-    case 'goerli':
-      return 5
-    case 'kovan':
-      return 42
-    case 'xdai':
-      return 100
-    case 'bsc':
-      return 56
-    default:
-      return 0
-  }
+  const { networkName, networkId } = get(app)
+  return networkId === id && networkName
+    ? networkName
+    : (
+        {
+          1: 'mainnet',
+          3: 'ropsten',
+          4: 'rinkeby',
+          5: 'goerli',
+          28: 'boba-rinkeby',
+          42: 'kovan',
+          56: 'bsc',
+          100: 'xdai',
+          137: 'polygon',
+          288: 'boba-mainnet'
+        } as { [key: number]: string }
+      )[id] || 'unknown'
 }
 
 export function wait(time: number) {
