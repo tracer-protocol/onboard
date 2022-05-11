@@ -9,15 +9,21 @@ import { getProviderName } from '../../utilities'
 // wallets that qualify for default wallets need to have no
 // init parameters that are required for full functionality
 const desktopDefaultWalletNames = [
+  'tokenary',
+  'tally',
   'metamask',
   'binance',
+  'mathwallet',
   'frame',
   'torus',
   'opera',
-  'liquality'
+  'liquality',
+  'blockwallet'
 ]
 
 const mobileDefaultWalletNames = [
+  'tokenary',
+  '1inch',
   'metamask',
   'coinbase',
   'trust',
@@ -27,6 +33,7 @@ const mobileDefaultWalletNames = [
   'status',
   'hyperpay',
   'tokenpocket',
+  'mathwallet',
   'dcent',
   'atoken',
   'liquality',
@@ -42,6 +49,8 @@ const providerNameToWalletName = (providerName: string) =>
     ? providerName
     : providerName === 'WalletConnect'
     ? 'walletConnect'
+    : providerName === `D'CENT`
+    ? 'dcent'
     : providerName.toLocaleLowerCase()
 
 function select(
@@ -65,11 +74,16 @@ function select(
       wallet?.display &&
       wallet?.display[isMobile ? 'mobile' : 'desktop'] === false
 
-    if (detectedWalletName) {
+    // If the detected wallet is already listed as a wallet option then don't inject it
+    const walletNotIncluded = wallets.every(
+      wallet => isWalletInit(wallet) && wallet.walletName !== detectedWalletName
+    )
+
+    if (detectedWalletName && walletNotIncluded) {
       // This wallet is built into onboard so add the walletName and
       // the code below will load it as a wallet module
       wallets.unshift({ walletName: detectedWalletName })
-    } else if (detectedProviderName) {
+    } else if (window?.ethereum && !detectedWalletName) {
       // A provider has been detected but there is not a walletName therefore
       // this wallet is not built into onboard so add it as a generic injected wallet
       wallets.unshift({ walletName: 'detectedwallet' })
@@ -118,7 +132,7 @@ function select(
   if (detectedWalletName && !defaultWalletNames.includes(detectedWalletName)) {
     defaultWalletNames.unshift(detectedWalletName)
     // If we detected a provider but it is not builtin add the generic injected provider
-  } else if (!detectedWalletName && detectedProviderName) {
+  } else if (window?.ethereum && !detectedWalletName) {
     defaultWalletNames.unshift('detectedwallet')
   }
   return Promise.all(
@@ -142,6 +156,10 @@ function getModule(name: string): Promise<{
       }
     case 'meetone':
       return import('./wallets/meetone')
+    case 'tally':
+      return import('./wallets/tally')
+    case 'tokenary':
+      return import('./wallets/tokenary')
     case 'metamask':
       return import('./wallets/metamask')
     case 'portis':
@@ -216,6 +234,15 @@ function getModule(name: string): Promise<{
       return import('./wallets/tp')
     // case 'mewwallet':
     //   return import('./wallets/mewwallet')
+    case 'mathwallet':
+      return import('./wallets/mathwallet')
+    case '1inch':
+      return import('./wallets/1inch')
+    case 'blockwallet':
+    case 'blankwallet':
+      return import('./wallets/blockwallet')
+    case 'ronin':
+      return import('./wallets/ronin')
     default:
       throw new Error(`${name} is not a valid walletName.`)
   }
