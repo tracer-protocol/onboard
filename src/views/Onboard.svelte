@@ -18,7 +18,7 @@
 
 <style>
   :global(.bn-onboard-custom.bn-onboard-dark-mode) {
-    background: #111928;
+    background: var(--background-secondary);
     color: #ffffff;
   }
 

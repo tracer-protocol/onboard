@@ -44,10 +44,10 @@
 
   .list:hover {
     transition: 0.3s;
-    background-color: #3da8f5;
+    background-color: var(--primary);;
   }
   .list-dark:hover {
-    background-color: #6875F5;
+    background-color: var(--primary);
   }
 
   ::-webkit-scrollbar {

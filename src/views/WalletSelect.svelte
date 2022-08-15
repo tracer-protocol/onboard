@@ -288,6 +288,8 @@
   .terms-content {
     text-align: center;
     color: gray;
+    height: 300px;
+    overflow-y: scroll;
   }
   .terms-content-dark {
       color: white;
@@ -310,6 +312,7 @@
     }
     .agreement-content {
       height: 100px;
+      overflow-y: scroll;
     }
   }
 
@@ -322,7 +325,7 @@
     color: white;
   }
   .link a {
-    color: #3da8f5;
+    color: inherit;
     text-decoration: underline;
   }
 
@@ -332,16 +335,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #ffffff;
-    background-color: #0210be;
+    color: var(--primary);
+    border-color: var(--primary);
+    border-width: 1px;
+    background-color: transparent;
     padding: 20px 0;
-    border-radius: 10px;
+    border-radius: 1px;
     cursor: not-allowed;
     opacity: 0.5;
   }
-  .button-dark {
-    background-color: #3535DC;
-  }
+
+
   button.active {
     transition: 0.5s;
     opacity: 1;
@@ -358,26 +362,29 @@
   }
 
   .progress-indicator {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background-color: #002886;
+    border-color: var(--primary);
+    border-width: 2px;
+    background-color: inherit;
     cursor: pointer;
   }
   .progress-indicator-dark {
-      background-color: white;
+      background-color: inherit;
   }
 
   .progress-indicator-selected {
-    width: 15px;
-    height: 15px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background-color: #002886;
-    border: 3px solid #3da8f5;
+    box-shadow: 0px 0px 10px rgba(28, 100, 242, 0.8);
+    background-color: var(--primary);
+    border: 2px solid var(--primary);
   }
   .progress-indicator-selected-dark {
-      background-color: #3535DC;
-      border: 3px solid #A6A6F2;
+      background-color: var(--primary);
+      border: 2px solid var(--primary);
   }
 
   .check {
@@ -398,7 +405,7 @@
   }
 
   .input-dark {
-    accent-color: #6875F5;
+    accent-color: var(--primary);
   }
 </style>
 
@@ -611,19 +618,89 @@
       <div class="subtitle">Terms of Use</div>
       <br />
       <div class="terms-content" class:terms-content-dark={$app.darkMode}>
-        By connecting your wallet, you accept Tracer’s Terms of Use and
-        represent and warrant that you are not a resident of any of the
-        following countries:
+        Your use of a smart contract governed by Tracer DAO (Mycelium), including a
+        Mycelium Perpetual Pools or Mycelium Perpetual Swaps contract and the Mycelium Factory (“Mycelium Suite”),
+        involves various risks, including, but not limited to, the risks outlined below.
+        By interacting with the Mycelium Suite, you accept those risks. If you choose to use the Mycelium Suite,
+        this Disclaimer applies in addition to Mycelium’s Terms of Use, which are available here: https://mycelium.xyz/terms-of-use
         <br /><br />
-        China, the United States, Antigua and Barbuda, Algeria, Bangladesh, Bolivia,
-        Belarus, Burundi, Myanmar (Burma), Cote D’Ivoire (Ivory Coast), Crimea and
-        Sevastopol, Cuba, Democratic Republic of Congo, Ecuador, Iran, Iraq, Liberia,
-        Libya, Magnitsky, Mali, Morocco, Nepal, North Korea, Somalia, Sudan, Syria,
-        Venezuela, Yemen or Zimbabwe.
-      </div>
-      <br />
-      <div class="link" class:link-dark={$app.darkMode}>
-        Read the&nbsp;<a href="/terms-of-use" target="_blank">Terms of Use</a>
+        1. Price and Asset Risk
+        <br />
+        Asset losses are possible due to the fluctuation of prices of tokens.
+        You acknowledge that financial contracts involving cryptocurrencies are inherently risky,
+        some cryptocurrencies are not recognised legal tender in some countries,
+        are unregulated by many central and government authorities, and may be subject to extreme price volatility.
+        You warrant that you understand the risks associated with transactions, cryptocurrencies,
+        financial contracts and any other goods, services or products in connection to the Mycelium protocol.
+        Before using the Mycelium protocol, you should review the relevant documentation to
+        make sure you understand how the Mycelium protocol works.
+        <br /><br />
+        2. Liquidation Risk
+        <br />
+        When interacting with the Mycelium Suite, your positions may be subject to liquidation risk.
+        Despite having well defined liquidation penalties, your loss could be 100% of your position.
+        This risk is not only theoretical, during the so-called “Black Thursday”,
+        around $8M of user’s positions in MakerDAO was lost. The Mycelium Suite is non-custodial,
+        and therefore can not help users to avoid liquidations, or recover funds following liquidation.
+        <br /><br />
+        3. Oracle Risk
+        <br />
+        Mycelium relies on oracles to provide spot price data for assets.
+        This price data is used as part of the mint and burn functions (for Perpetual Pools)
+        and liquidation flow (for Perpetual Swaps) and, as a result, has inherent risks.
+        Should oracle prices not be updated, or should they be updated erroneously,
+        there is risk a user may suffer loss, or be liquidated, unexpectedly. Currently,
+        the Mycelium Suite uses Chainlink’s oracle network; this may be subject to change.
+        <br /><br />
+        4. Smart Contract and Software Risk
+        <br />
+        The Mycelium Suite has been audited (Perpetual Pools by Sigma Prima and
+        Perpetual Swaps by Sigma Prime and Code 423n4).
+        The contracts were checked for correctness of functionality and safety of user funds.
+        However, an audit does not eliminate the risk of an exploit or bug being present in the Mycelium protocol.
+        You must do your own research before interacting with the Mycelium protocol,
+        and only supply funds that you are prepared to lose.
+        <br /><br />
+        5. Contract Upgrade Risk
+        <br />
+        Contract upgrades may be implemented by Mycelium, via proposal, to the Mycelium Suite.
+        While these upgrades will likely be audited prior to implementation,
+        the Mycelium Suite’s codebase is subject to change and, as such,
+        risks of exploits and bugs are present. You must remain aware of updates being
+        implemented by Mycelium to the Mycelium Suite, and ensure that, following any update,
+        the Mycelium Suite is safe to use.
+        <br /><br />
+        6. Governance Risk
+        <br />
+        Mycelium owns and controls the Mycelium Suite. Upgrades and modifications to the protocol
+        are managed in a decentralised manner by holders of TCR governance tokens.
+        No entity involved in creating the Mycelium Suite (including developers) will
+        be liable for any claims or damage whatsoever associated with your use, inability
+        to use, direct, indirect, incidental, special, exemplary, punitive or consequential damages,
+        or loss of profits, cryptocurrencies, tokens, or anything else of value.
+        For the avoidance of doubt, Mycelium does not control user funds.
+        <br /><br />
+        7. Developer Must Comply with Applicable Laws
+        <br />
+        Mycelium is not responsible for the actions of Mycelium Suite users. Users of Mycelium Suite are
+        solely responsible for ensuring compliance with the laws of their specific jurisdiction.
+        Mycelium are curators of the Mycelium Suite and maintain no liability for the repercussions,
+        actions and consequences of material created using the Mycelium Suite.
+        <br /><br />
+        8. Limitation of Liability
+        <br />
+        MYCELIUM, ITS AFFILIATES, THEIR RESPECTIVE OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, SUPPLIERS,
+        OR LICENSORS MAKE NO WARRANTIES OR REPRESENTATIONS ABOUT THE MYCELIUM SUITE, ITS CONTENTS,
+        OR ANY CREATION OR ANY DERIVATIVE OF THE MYCELIUM FACTORY INCLUDING BUT NOT LIMITED TO,
+        ITS ACCURACY, RELIABILITY, FUNCTIONALITY, COMPLETENESS, OR TIMELINESS. ANY CREATION BY A
+        USER OF THE MYCELIUM SUITE IS NOT THE RESPONSIBILITY OF MYCELIUM AND THE USER INDEMNIFIES
+        MYCELIUM AGAINST ANY AND ALL CLAIMS THAT MAY ARISE OUT OF USING THE MYCELIUM SUITE.
+        USERS ACKNOWLEDGE AND AGREE THAT THEY TAKE SOLE RESPONSIBILITY FOR CREATIONS OR WORKS OF
+        THE MYCELIUM SUITE AND ACKNOWLEDGE THAT THEY USE THE MYCELIUM SUITE AT THEIR OWN RISK.
+        <br /><br />
+        <div class="link" class:link-dark={$app.darkMode}>
+          Read the&nbsp;<a href="/terms-of-use" target="_blank">Terms of Use</a>
+        </div>
       </div>
       <br />
       <div class="progress">
